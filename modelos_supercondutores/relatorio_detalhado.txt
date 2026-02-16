@@ -1,0 +1,16 @@
+RELATÓRIO DETALHADO - CLASSIFICAÇÃO DE SUPERCONDUTORES
+============================================================
+
+Melhor Modelo: SVM
+F1-Score: 0.7258
+Dataset: 2474 amostras, 50 features
+Balanceamento: 0.551
+Randomized Search: 100 iterações por modelo
+
+Performance por modelo:
+Random Forest: F1=0.7226890756302522, AUC=0.7238227238227237
+SVM: F1=0.7258064516129032, AUC=0.6214566214566215
+XGBoost: F1=0.7106017191977078, AUC=0.6973731973731975
+
+Gráficos salvos em: graficos_supercondutores/
+Modelos salvos em: modelos_supercondutores/
