@@ -18,35 +18,36 @@ Este trabalho investiga a aplicação de técnicas de aprendizado de máquina pa
 ```
 TCC/
 ├── tcc_final.tex                    # Documento LaTeX do TCC (72 páginas)
-├── main.tex                         # Proposta original do TCC
+├── tcc_final.pdf                    # PDF compilado
 ├── requirements.txt                 # Dependências Python
 ├── README.md                        # Este arquivo
 ├── .gitignore                       # Arquivos ignorados pelo Git
 │
 ├── dados/
-│   └── data_treino.csv              # Dataset bruto (2474 materiais, 116 features numéricas + 12 strings; reduzido a 53 após pré-processamento)
+│   └── data_treino.csv              # Dataset bruto (2474 materiais, 116 features numéricas + 12 colunas string `atoms_*`; reduzido a 53 após pré-processamento)
 │
-├── dados_preprocessados/
+├── dados_preprocessados/            # Outputs do pipeline (gerados pelos scripts)
 │   ├── dados_tcc_v2.npz             # Arrays NumPy (X_train, X_test, y_train, y_test)
+│   ├── scaler_v2.pkl                # StandardScaler ajustado no treino
+│   ├── selected_features_v2.pkl     # Nomes das 53 features pós-preprocessing
 │   ├── best_params.json             # Melhores hiperparâmetros (RandomizedSearchCV)
 │   ├── resultados_v2.json           # Métricas de performance de todos os modelos
 │   ├── comparacao_estatistica.json  # Testes McNemar, Friedman, Bootstrap CI
 │   ├── interpretabilidade_results.json  # Resultados SHAP e calibração
 │   └── sisso_results.json           # Resultados da regressão simbólica
 │
-├── notebooks_treino/                # Scripts Python de análise
-│   ├── 00_pipeline_preprocessamento.py  # Pré-processamento e split
+├── notebooks_treino/                # Scripts Python do pipeline (rodar nesta ordem)
+│   ├── 00_pipeline_preprocessamento.py  # Pré-processamento e split (gera dados/data_treino_v2.csv e dados_preprocessados/dados_tcc_v2.npz)
 │   ├── 09_hyperparameter_tuning.py      # Otimização de hiperparâmetros
 │   ├── train_all_models.py              # Re-treinamento com params otimizados
 │   ├── 07_analise_comparativa.py        # Análise estatística comparativa
 │   ├── 08_interpretabilidade.py         # SHAP, calibração, curvas de aprendizado
-│   └── analise_sisso.py                 # Regressão simbólica (SISSO-like)
+│   └── analise_sisso.py                 # Regressão simbólica (SISSO)
 │
-├── graficos/                        # Gráficos gerados (PNG, 300 DPI)
-│   ├── 0X_*_confusion_matrix.png    # Matrizes de confusão individuais
-│   ├── 0X_*_roc_curve.png           # Curvas ROC individuais
-│   ├── 0X_*_pr_curve.png            # Curvas Precision-Recall
-│   ├── 0X_*_feature_importance.png  # Importância de features
+├── graficos/                        # Gráficos referenciados pelo TCC (PNG, 300 DPI)
+│   ├── 01_distribuicao_tc.png       # Distribuição de Tc no dataset
+│   ├── 02_correlacao_features.png   # Mapa de calor de correlação
+│   ├── 03_boxplot_features.png      # Boxplots das features principais
 │   ├── 07_comparacao_metricas.png   # Comparação de métricas
 │   ├── 07_curvas_roc_comparacao.png # Curvas ROC sobrepostas
 │   ├── 07_curvas_pr_comparacao.png  # Curvas PR sobrepostas
@@ -55,6 +56,9 @@ TCC/
 │   ├── 07_mcnemar_pvalues.png       # Teste de McNemar
 │   ├── 07_bootstrap_ci.png          # Intervalos de confiança
 │   ├── 07_ranking_modelos.png       # Ranking Friedman
+│   ├── 08_analise_erro.png          # Análise de erro (falsos negativos)
+│   ├── 08_feature_importance_comparison.png  # Importância comparada entre modelos
+│   ├── 18_partial_dependence_plots.png  # PDPs para Random Forest
 │   ├── 20_sisso_predicao_tc.png     # Predição SISSO
 │   ├── 22_sisso_coeficientes.png    # Coeficientes SISSO
 │   ├── 24_shap_summary.png          # SHAP summary plot
@@ -69,9 +73,8 @@ TCC/
 │   ├── mlp_model.pkl
 │   └── lasso_model.pkl
 │
-├── ler_arquivo.ipynb                # Extração dos dados do HDF5 (SciDB)
-├── discovery.ipynb                  # Exploração e limpeza dos dados
-└── classificacao_supercondutores_corrigido_minimal.ipynb  # Versão embrionária
+├── ler_arquivo.ipynb                # Extração inicial dos dados do HDF5 do SciDB (executada uma vez para gerar data_treino.csv)
+└── discovery.ipynb                  # Análise exploratória inicial e limpeza dos dados
 ```
 
 ---
