@@ -1,13 +1,25 @@
+# TCC — Classificação de Supercondutores com Machine Learning
+# Dependências Python
+
+# Computação científica
 numpy>=1.24
 pandas>=2.0
+scipy>=1.10
+
+# Machine Learning
 scikit-learn>=1.3
 xgboost>=2.0
 lightgbm>=4.0
+
+# Interpretabilidade
+shap>=0.42
+
+# Visualização
 matplotlib>=3.7
 seaborn>=0.12
-shap>=0.42
-lime>=0.2
-torch>=2.0
-TorchSisso>=0.1
-ipykernel>=6.0
-notebook>=7.0
+
+# Testes estatísticos
+scikit-posthocs>=0.8
+
+# Utilitários
+joblib>=1.3

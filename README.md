@@ -1,7 +1,7 @@
-# TCC — Classificação de Supercondutores com Machine Learning
+# TCC — Classificação de Materiais Supercondutores via Aprendizado de Máquina
 
-**Trabalho de Conclusão de Curso** apresentado ao Curso de Bacharelado em Física da Universidade Federal do ABC (UFABC).
-
+**Trabalho de Conclusão de Curso** — Bacharelado em Física  
+**Universidade Federal do ABC (UFABC)**  
 **Autor:** Lucas Martin De Lucca  
 **Título:** *Classificação de Supercondutores Utilizando Técnicas de Aprendizado de Máquina: Uma Abordagem da Física Computacional*
 
@@ -9,7 +9,7 @@
 
 ## Resumo
 
-Este trabalho investiga a aplicação de sete modelos de aprendizado de máquina — Random Forest, XGBoost, LightGBM, SVM, MLP, LASSO e SISSO — para classificar materiais como supercondutores ou não-supercondutores a partir de descritores de estrutura eletrônica calculados via DFT. O modelo Random Forest alcançou o melhor desempenho (F1-Score: 0.727, ROC-AUC: 0.734). A análise de interpretabilidade revelou que a densidade de estados eletrônicos (DOS) no nível de Fermi é o descritor mais preditivo, corroborando a teoria BCS.
+Este trabalho investiga a aplicação de técnicas de aprendizado de máquina para a classificação binária de materiais supercondutores a partir de descritores estruturais e eletrônicos extraídos do banco de dados SciDB. Seis modelos de classificação (Random Forest, XGBoost, LightGBM, SVM, MLP e LASSO) e um modelo de regressão simbólica (SISSO) são implementados, otimizados e comparados estatisticamente. A análise de interpretabilidade via SHAP revela que a Densidade de Estados (DOS) no nível de Fermi é o descritor mais relevante, corroborando a teoria BCS da supercondutividade.
 
 ---
 
@@ -17,49 +17,49 @@ Este trabalho investiga a aplicação de sete modelos de aprendizado de máquina
 
 ```
 TCC/
-├── tcc_final.tex                    # Documento LaTeX do TCC (61 páginas)
+├── tcc_final.tex                    # Documento LaTeX do TCC (~60 páginas)
 ├── main.tex                         # Proposta original do TCC
 ├── requirements.txt                 # Dependências Python
 ├── README.md                        # Este arquivo
+├── .gitignore                       # Arquivos ignorados pelo Git
 │
 ├── dados/
-│   └── data_treino.csv              # Dataset final (2.474 materiais, 130 features)
+│   └── data_treino.csv              # Dataset final (2474 materiais, 56 features)
 │
 ├── dados_preprocessados/
-│   ├── dados_tcc.npz                # Dados pré-processados (treino/teste)
-│   ├── scaler.pkl                   # StandardScaler ajustado
-│   └── selected_features.pkl        # Lista de features selecionadas
+│   ├── dados_tcc_v2.npz             # Arrays NumPy (X_train, X_test, y_train, y_test)
+│   ├── best_params.json             # Melhores hiperparâmetros (RandomizedSearchCV)
+│   ├── resultados_v2.json           # Métricas de performance de todos os modelos
+│   ├── comparacao_estatistica.json  # Testes McNemar, Friedman, Bootstrap CI
+│   ├── interpretabilidade_results.json  # Resultados SHAP e calibração
+│   └── sisso_results.json           # Resultados da regressão simbólica
 │
-├── notebooks_treino/
-│   ├── 00_pipeline_preprocessamento.ipynb   # Pré-processamento dos dados
-│   ├── 01_random_forest.ipynb               # Modelo Random Forest
-│   ├── 02_xgboost.ipynb                     # Modelo XGBoost
-│   ├── 03_svm.ipynb                         # Modelo SVM (kernel RBF)
-│   ├── 04_lightgbm.ipynb                    # Modelo LightGBM
-│   ├── 05_mlp.ipynb                         # Modelo MLP (Rede Neural)
-│   ├── 06_lasso.ipynb                       # Modelo LASSO (Regressão L1)
-│   ├── 07_analise_comparativa.ipynb         # Comparação de todos os modelos
-│   ├── 08_interpretabilidade.ipynb          # SHAP, LIME, PDP, análise de erro
-│   ├── analise_completa.py                  # Script autônomo (todos os modelos)
-│   ├── analise_pdp_erro.py                  # Partial Dependence Plots e erros
-│   ├── analise_interpretabilidade.py        # Análise SHAP e LIME
-│   └── analise_sisso.py                     # Regressão simbólica (SISSO)
+├── notebooks_treino/                # Scripts Python de análise
+│   ├── 00_pipeline_preprocessamento.py  # Pré-processamento e split
+│   ├── 09_hyperparameter_tuning.py      # Otimização de hiperparâmetros
+│   ├── train_all_models.py              # Re-treinamento com params otimizados
+│   ├── 07_analise_comparativa.py        # Análise estatística comparativa
+│   ├── 08_interpretabilidade.py         # SHAP, calibração, curvas de aprendizado
+│   └── analise_sisso.py                 # Regressão simbólica (SISSO-like)
 │
-├── graficos/                        # Todos os gráficos gerados
-│   ├── 01_*.png                     # Gráficos do Random Forest
-│   ├── 02_*.png                     # Gráficos do XGBoost
-│   ├── ...                          # (demais modelos)
-│   ├── 07_*.png                     # Gráficos comparativos
-│   ├── 08_*.png                     # Gráficos de interpretabilidade
-│   ├── 18_partial_dependence_plots.png
-│   ├── 19_analise_erro.png
+├── graficos/                        # Gráficos gerados (PNG, 300 DPI)
+│   ├── 0X_*_confusion_matrix.png    # Matrizes de confusão individuais
+│   ├── 0X_*_roc_curve.png           # Curvas ROC individuais
+│   ├── 0X_*_pr_curve.png            # Curvas Precision-Recall
+│   ├── 0X_*_feature_importance.png  # Importância de features
+│   ├── 07_comparacao_metricas.png   # Comparação de métricas
+│   ├── 07_curvas_roc_comparacao.png # Curvas ROC sobrepostas
+│   ├── 07_curvas_pr_comparacao.png  # Curvas PR sobrepostas
+│   ├── 07_matrizes_confusao.png     # Matrizes de confusão (2x3)
+│   ├── 07_cv_boxplot.png            # Boxplot validação cruzada
+│   ├── 07_mcnemar_pvalues.png       # Teste de McNemar
+│   ├── 07_bootstrap_ci.png          # Intervalos de confiança
+│   ├── 07_ranking_modelos.png       # Ranking Friedman
 │   ├── 20_sisso_predicao_tc.png     # Predição SISSO
-│   ├── 21_sisso_erros.png           # Erros SISSO
 │   ├── 22_sisso_coeficientes.png    # Coeficientes SISSO
-│   ├── resultados_modelos.csv       # Métricas de todos os modelos
-│   └── resumo_resultados.txt        # Resumo textual dos resultados
-│
-├── graficos_supercondutores/        # Gráficos da versão embrionária
+│   ├── 24_shap_summary.png          # SHAP summary plot
+│   ├── 27_calibration.png           # Diagrama de confiabilidade
+│   └── 28_learning_curve.png        # Curva de aprendizado
 │
 ├── modelos/                         # Modelos treinados (.pkl)
 │   ├── random_forest_model.pkl
@@ -67,10 +67,9 @@ TCC/
 │   ├── lightgbm_model.pkl
 │   ├── svm_model.pkl
 │   ├── mlp_model.pkl
-│   ├── lasso_model.pkl
-│   └── *_results.pkl                # Resultados de cada modelo
+│   └── lasso_model.pkl
 │
-├── modelos_supercondutores/         # Modelos da versão embrionária
+├── notebooks/                       # Notebooks Jupyter (versão anterior)
 │
 ├── ler_arquivo.ipynb                # Extração dos dados do HDF5 (SciDB)
 ├── discovery.ipynb                  # Exploração e limpeza dos dados
@@ -79,13 +78,32 @@ TCC/
 
 ---
 
-## Origem dos Dados
+## Resultados Principais
 
-Os dados foram extraídos do repositório **SciDB** (Scientific Data Bank) da Academia Chinesa de Ciências. O arquivo original, em formato HDF5 (~12 GB), contém propriedades de estrutura eletrônica de 2.474 materiais calculadas via Teoria do Funcional da Densidade (DFT).
+### Performance dos Modelos (Conjunto de Teste)
 
-A pipeline de extração está documentada em:
-1. `ler_arquivo.ipynb` — Leitura do HDF5 e extração de 132 features
-2. `discovery.ipynb` — Análise exploratória e geração do `data_treino.csv`
+| Modelo | Accuracy | F1-Score | Precision | Recall | ROC-AUC |
+|--------|----------|----------|-----------|--------|---------|
+| **Random Forest** | 0.6242 | **0.7232** | 0.6090 | 0.8901 | 0.6509 |
+| XGBoost | **0.6586** | 0.7081 | **0.6699** | 0.7509 | **0.7243** |
+| LightGBM | 0.6545 | 0.7005 | 0.6711 | 0.7326 | 0.7068 |
+| SVM (RBF) | 0.5697 | 0.7164 | 0.5628 | 0.9853 | 0.6655 |
+| MLP | 0.5576 | 0.6831 | 0.5646 | 0.8645 | 0.5575 |
+| LASSO (L1) | 0.5515 | 0.7109 | 0.5515 | 1.0000 | 0.5000 |
+
+### Análise Estatística
+
+- **Teste de Friedman**: χ² = 10.83, p = 0.055 (sem diferença significativa entre modelos)
+- **Bootstrap 95% CI (F1)**: Random Forest [0.682, 0.762], XGBoost [0.663, 0.751]
+- **Melhor modelo**: Random Forest (F1 = 0.723, melhor equilíbrio precision/recall)
+
+### SISSO (Regressão Simbólica)
+
+| Dimensionalidade | R² (CV) | R² (Teste) | RMSE (K) | Features Selecionadas |
+|------------------|---------|------------|----------|----------------------|
+| 1D (Linear) | 0.178 | 0.189 | 15.48 | 9/10 |
+| 2D (Quadrático) | 0.348 | 0.359 | 13.76 | 38/65 |
+| 3D (Cúbico) | 0.450 | 0.528 | 11.81 | 33/175 |
 
 ---
 
@@ -104,13 +122,28 @@ cd TCC
 pip install -r requirements.txt
 ```
 
-### 3. Executar os notebooks
-
-Execute os notebooks na pasta `notebooks_treino/` na ordem numérica (00 a 08). Alternativamente, execute o script autônomo:
+### 3. Executar pipeline completo
 
 ```bash
-cd notebooks_treino
-python analise_completa.py
+cd notebooks_treino/
+
+# 1. Pré-processamento
+python3 00_pipeline_preprocessamento.py
+
+# 2. Otimização de hiperparâmetros (~10 min)
+python3 09_hyperparameter_tuning.py
+
+# 3. Treinamento com params otimizados
+python3 train_all_models.py
+
+# 4. Análise comparativa estatística
+python3 07_analise_comparativa.py
+
+# 5. Interpretabilidade (SHAP, calibração)
+python3 08_interpretabilidade.py
+
+# 6. SISSO (regressão simbólica)
+python3 analise_sisso.py
 ```
 
 ### 4. Compilar o TCC (LaTeX)
@@ -120,18 +153,40 @@ pdflatex tcc_final.tex
 pdflatex tcc_final.tex   # Segunda compilação para referências cruzadas
 ```
 
+Ou use o [Overleaf](https://www.overleaf.com/) para compilação online.
+
 ---
 
-## Resultados Principais
+## Descrição dos Scripts
 
-| Modelo | Acurácia | Precisão | Recall | F1-Score | ROC-AUC |
-|--------|----------|----------|--------|----------|---------|
-| **Random Forest** | **0.6727** | **0.6729** | **0.7912** | **0.7273** | **0.7344** |
-| XGBoost | 0.6606 | 0.6744 | 0.7436 | 0.7073 | 0.7270 |
-| LightGBM | 0.6545 | 0.6723 | 0.7326 | 0.7011 | 0.7214 |
-| SVM | 0.6303 | 0.6471 | 0.7326 | 0.6872 | 0.7061 |
-| MLP | 0.6364 | 0.6614 | 0.7033 | 0.6817 | 0.7024 |
-| LASSO | 0.6121 | 0.6375 | 0.7033 | 0.6688 | 0.6851 |
+| Script | Função |
+|--------|--------|
+| `00_pipeline_preprocessamento.py` | Carrega `data_treino.csv`, define classes (Tc>0 = SC, Tc=NaN = não-SC), trata missing values, normaliza com StandardScaler, faz split estratificado 80/20 com controle de data leakage via `group_id` |
+| `09_hyperparameter_tuning.py` | RandomizedSearchCV com 20 iterações e 5-fold CV para cada modelo. Salva melhores parâmetros em `best_params.json` |
+| `train_all_models.py` | Re-treina todos os 6 modelos com parâmetros otimizados. Gera gráficos individuais (confusão, ROC, PR) e comparativos |
+| `07_analise_comparativa.py` | Validação cruzada 5-fold, teste de McNemar, teste de Friedman + Nemenyi, intervalos de confiança Bootstrap 95% |
+| `08_interpretabilidade.py` | SHAP (summary, dependence), calibração de probabilidades (Brier score), curvas de aprendizado |
+| `analise_sisso.py` | Regressão simbólica SISSO-like com features polinomiais + LASSO. Testa dimensionalidades 1D-3D e extrai equação analítica |
+
+---
+
+## Origem dos Dados
+
+Os dados foram extraídos do **SciDB** (Science Data Bank, Academia Chinesa de Ciências). O arquivo original, em formato HDF5 (~12 GB), contém propriedades de estrutura eletrônica calculadas via Teoria do Funcional da Densidade (DFT).
+
+A pipeline de extração está documentada em:
+1. `ler_arquivo.ipynb` — Leitura do HDF5 e extração de features
+2. `discovery.ipynb` — Análise exploratória e geração do `data_treino.csv`
+
+---
+
+## Referências Principais
+
+- Bardeen, J., Cooper, L. N., & Schrieffer, J. R. (1957). *Theory of Superconductivity*. Physical Review, 108(5), 1175.
+- Breiman, L. (2001). *Random Forests*. Machine Learning, 45(1), 5-32.
+- Chen, T., & Guestrin, C. (2016). *XGBoost: A Scalable Tree Boosting System*. KDD 2016.
+- Ke, G., et al. (2017). *LightGBM: A Highly Efficient Gradient Boosting Decision Tree*. NeurIPS 2017.
+- Stanev, V., et al. (2018). *Machine learning modeling of superconducting critical temperature*. npj Computational Materials, 4(1), 29.
 
 ---
 

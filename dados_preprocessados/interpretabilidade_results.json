@@ -1,0 +1,29 @@
+{
+  "brier_score_rf": 0.23443853350828564,
+  "brier_score_xgb": 0.23235675692558289,
+  "learning_curve_improvement_rf": 0.05482483054582288,
+  "top_features_rf": [
+    "sc_DOSs_mean",
+    "sc_DOSs_min",
+    "sc_bands_max",
+    "sc_bands_mean",
+    "sc_bands_min",
+    "recip_latt_0_2",
+    "fermi_line_min",
+    "fermi_line_size",
+    "fermi_line_max",
+    "sc_bands_std"
+  ],
+  "top_features_xgb": [
+    "recip_latt_0_2",
+    "atoms_size",
+    "position_3_2",
+    "position_0_2",
+    "sc_DOSs_mean",
+    "position_5_2",
+    "position_0_1",
+    "sc_bands_max",
+    "sc_bands_std",
+    "fermi_line_min"
+  ]
+}
