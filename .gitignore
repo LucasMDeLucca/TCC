@@ -16,13 +16,27 @@ _build/
 _texbuild/
 build/
 
-# Patches and intermediate review artifacts (não commitar arquivos temporários da revisão)
+# Patches, cleanup scripts e relatórios de revisão crítica (artefatos de iteração,
+# NÃO commitar — usar localmente e descartar)
 tcc_revisao_critica*.patch
+tcc_revisao_critica*.diff
 tcc_final_corrigido*.tex
 tcc_final_corrigido*.pdf
+tcc_final_p?.tex
+tcc_final_p??.tex
+tcc_final_p?.pdf
+tcc_final_p??.pdf
+cleanup_p?.sh
+cleanup_p??.sh
+PROMPT_aplicar_e_validar*.md
+VALIDACAO_P?.md
+VALIDACAO_P??.md
 *.before*
 *.orig
 *.rej
+
+# Figuras individuais por modelo (opcionais, geradas só com SAVE_INDIVIDUAL_FIGS=True)
+graficos/individuais/
 
 # Python
 __pycache__/
