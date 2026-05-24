@@ -11,6 +11,19 @@
 *.bbl
 *.blg
 
+# LaTeX build directories
+_build/
+_texbuild/
+build/
+
+# Patches and intermediate review artifacts (não commitar arquivos temporários da revisão)
+tcc_revisao_critica*.patch
+tcc_final_corrigido*.tex
+tcc_final_corrigido*.pdf
+*.before*
+*.orig
+*.rej
+
 # Python
 __pycache__/
 *.pyc

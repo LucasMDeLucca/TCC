@@ -161,7 +161,7 @@ Ou use o [Overleaf](https://www.overleaf.com/) para compilação online.
 
 | Script | Função |
 |--------|--------|
-| `00_pipeline_preprocessamento.py` | Carrega `data_treino.csv`, define classes (Tc>0 = SC, Tc=NaN = não-SC), trata missing values, normaliza com StandardScaler, faz split estratificado 80/20 com controle de data leakage via `group_id` |
+| `00_pipeline_preprocessamento.py` | Carrega `data_treino.csv`, define classes (Tc>0 = SC; Tc=0 ou Tc=NaN tratados como não-SC — aproximação reconhecida no texto, ver Cap. 4.3 do TCC), trata missing values, normaliza com StandardScaler, faz split 80/20 com controle de data leakage via `GroupShuffleSplit` (separação por `group_id`). Reporta tc_positive=1362, tc_zero=1, tc_nan=1111. |
 | `09_hyperparameter_tuning.py` | RandomizedSearchCV com 20 iterações e 5-fold CV para cada modelo. Salva melhores parâmetros em `best_params.json` |
 | `train_all_models.py` | Re-treina todos os 6 modelos com parâmetros otimizados. Gera gráficos individuais (confusão, ROC, PR) e comparativos |
 | `07_analise_comparativa.py` | Validação cruzada 5-fold, teste de McNemar, teste de Friedman + Nemenyi, intervalos de confiança Bootstrap 95% |
