@@ -1,0 +1,411 @@
+--- a/tcc_final.tex
++++ b/tcc_final.tex
+@@ -54,6 +54,7 @@
+     {\Huge\bfseries Classificação de Supercondutores Utilizando Técnicas de Aprendizado de Máquina: Uma Abordagem da Física Computacional}
+     \vfill
+     {\Large\itshape Lucas Martin De Lucca}\\[1cm]
++    % TODO: preencher o nome do orientador antes da entrega final
+     {\large Orientador: Prof. Dr. [Nome do Orientador]}
+     \vfill
+     {\large Santo André -- SP \\ 2026}
+@@ -65,7 +66,7 @@
+ \newpage
+ \begin{abstract}
+ \noindent
+-A busca por novos materiais supercondutores, especialmente aqueles que exibem o fenômeno a temperaturas mais elevadas, é uma das fronteiras mais ativas da física da matéria condensada. A complexidade dos mecanismos subjacentes, particularmente em supercondutores não convencionais, torna a predição teórica a partir de primeiros princípios uma tarefa computacionalmente custosa e, por vezes, intratável. Este trabalho explora uma abordagem alternativa, fundamentada na física computacional e na ciência de dados, para classificar materiais como supercondutores ou não-supercondutores com base em um conjunto de descritores físicos. Utilizando um banco de dados público contendo mais de 2.400 compostos, foram implementados e avaliados seis modelos de aprendizado de máquina: Random Forest, XGBoost, LightGBM, Support Vector Machine (SVM), Multilayer Perceptron (MLP) e LASSO. A metodologia envolveu um rigoroso pré-processamento dos dados, treinamento dos modelos e uma análise comparativa detalhada utilizando métricas como F1-Score, Acurácia e ROC-AUC. Os resultados demonstram a viabilidade da abordagem, com o modelo Random Forest alcançando o melhor desempenho, com um F1-Score de 0.723 e uma área sob a curva ROC de 0.651 no conjunto de teste. Uma análise da importância das \textit{features} e de Partial Dependence Plots revelou que propriedades da densidade de estados eletrônicos (DOS) e da estrutura de bandas no nível de Fermi são os descritores mais preditivos, corroborando a intuição física de que a supercondutividade está intrinsecamente ligada ao comportamento dos elétrons na superfície de Fermi. Uma análise de erro detalhada mostrou que os modelos têm maior dificuldade em classificar supercondutores convencionais de baixa temperatura crítica ($T_c < 5$ K). Este estudo não apenas fornece um modelo preditivo funcional, mas também reforça a sinergia entre o aprendizado de máquina e a física, abrindo caminhos para a triagem acelerada de novos materiais promissores.
++A busca por novos materiais supercondutores, especialmente aqueles que exibem o fenômeno a temperaturas mais elevadas, é uma das fronteiras mais ativas da física da matéria condensada. A complexidade dos mecanismos subjacentes, particularmente em supercondutores não convencionais, torna a predição teórica a partir de primeiros princípios uma tarefa computacionalmente custosa e, por vezes, intratável. Este trabalho explora uma abordagem alternativa, fundamentada na física computacional e na ciência de dados, para classificar materiais como supercondutores ou não-supercondutores com base em um conjunto de descritores físicos. Utilizando um banco de dados público contendo mais de 2.400 compostos extraídos do repositório SciDB, foram implementados e avaliados seis modelos de aprendizado de máquina: Random Forest, XGBoost, LightGBM, Support Vector Machine (SVM), Multilayer Perceptron (MLP) e LASSO. A metodologia envolveu pré-processamento rigoroso, otimização de hiperparâmetros via \texttt{RandomizedSearchCV}, controle de \textit{data leakage} via \texttt{GroupShuffleSplit} e análise comparativa estatística (testes de McNemar, Friedman e intervalos bootstrap). Os resultados demonstram a viabilidade da abordagem: o Random Forest alcançou o melhor F1-Score (0.723) com alto \textit{recall} (0.890), enquanto o XGBoost obteve o melhor ROC-AUC (0.724), com o teste de Friedman ($p = 0{,}055$) indicando ausência de diferença estatisticamente significativa entre os modelos a 5\%. Análises de interpretabilidade via SHAP e \textit{Partial Dependence Plots} revelaram que descritores da densidade de estados eletrônicos (DOS) e da estrutura de bandas no nível de Fermi são os mais preditivos, corroborando a intuição física de que a supercondutividade está intrinsecamente ligada ao comportamento dos elétrons na superfície de Fermi. Uma análise de erro mostrou que os modelos têm maior dificuldade em classificar supercondutores convencionais de baixa temperatura crítica ($T_c < 5$ K). Este estudo fornece um modelo preditivo funcional e reforça a sinergia entre o aprendizado de máquina e a física, abrindo caminhos para a triagem acelerada de novos materiais promissores.
+ \vspace{\baselineskip}
+ 
+ \noindent\textbf{Palavras-chave}: Supercondutividade, Aprendizado de Máquina, Física Computacional, Classificação de Materiais, Teoria BCS.
+@@ -77,7 +78,7 @@
+ \begin{otherlanguage}{english}
+ \begin{abstract}
+ \noindent
+-The search for new superconducting materials, especially those exhibiting the phenomenon at higher temperatures, is one of the most active frontiers in condensed matter physics. The complexity of the underlying mechanisms, particularly in unconventional superconductors, makes theoretical prediction from first principles a computationally expensive and sometimes intractable task. This work explores an alternative approach, grounded in computational physics and data science, to classify materials as superconductors or non-superconductors based on a set of physical descriptors. Using a public database containing over 2,400 compounds, six machine learning models were implemented and evaluated: Random Forest, XGBoost, LightGBM, Support Vector Machine (SVM), Multilayer Perceptron (MLP), and LASSO. The methodology involved rigorous data preprocessing, model training, and a detailed comparative analysis using metrics such as F1-Score, Accuracy, and ROC-AUC. The results demonstrate the feasibility of the approach, with the Random Forest model achieving the best performance, with an F1-Score of 0.723 and an area under the ROC curve of 0.651 on the test set. An analysis of feature importance and Partial Dependence Plots revealed that properties of the electronic density of states (DOS) and band structure at the Fermi level are the most predictive descriptors, corroborating the physical intuition that superconductivity is intrinsically linked to the behavior of electrons at the Fermi surface. A detailed error analysis showed that the models have greater difficulty classifying conventional superconductors with low critical temperature ($T_c < 5$ K). This study not only provides a functional predictive model but also reinforces the synergy between machine learning and physics, paving the way for the accelerated screening of promising new materials.
++The search for new superconducting materials, especially those exhibiting the phenomenon at higher temperatures, is one of the most active frontiers in condensed matter physics. The complexity of the underlying mechanisms, particularly in unconventional superconductors, makes theoretical prediction from first principles a computationally expensive and sometimes intractable task. This work explores an alternative approach, grounded in computational physics and data science, to classify materials as superconductors or non-superconductors based on a set of physical descriptors. Using a public database containing over 2,400 compounds extracted from the SciDB repository, six machine learning models were implemented and evaluated: Random Forest, XGBoost, LightGBM, Support Vector Machine (SVM), Multilayer Perceptron (MLP), and LASSO. The methodology involved rigorous preprocessing, hyperparameter optimization via \texttt{RandomizedSearchCV}, data leakage control via \texttt{GroupShuffleSplit}, and statistical comparative analysis (McNemar, Friedman, and bootstrap confidence intervals). The results demonstrate the feasibility of the approach: Random Forest achieved the best F1-Score (0.723) with high recall (0.890), while XGBoost obtained the best ROC-AUC (0.724), with Friedman's test ($p = 0.055$) indicating no statistically significant difference between models at 5\%. Interpretability analyses via SHAP and Partial Dependence Plots revealed that descriptors of the electronic density of states (DOS) and the band structure at the Fermi level are the most predictive, corroborating the physical intuition that superconductivity is intrinsically linked to the behavior of electrons at the Fermi surface. An error analysis showed that the models have greater difficulty classifying conventional superconductors with low critical temperature ($T_c < 5$ K). This study provides a functional predictive model and reinforces the synergy between machine learning and physics, paving the way for the accelerated screening of promising new materials.
+ \vspace{\baselineskip}
+ 
+ \noindent\textbf{Keywords}: Superconductivity, Machine Learning, Computational Physics, Materials Classification, BCS Theory.
+@@ -109,7 +110,7 @@
+ 
+ A física computacional emergiu como uma terceira via fundamental na pesquisa científica, complementando a teoria e o experimento. Métodos como a Teoria do Funcional da Densidade (DFT) permitem a simulação de propriedades eletrônicas de materiais a partir de primeiros princípios, sem parâmetros ajustáveis. Embora poderosa, a DFT e métodos correlatos são computacionalmente intensivos, tornando a triagem de vastos espaços de composição química uma tarefa proibitiva. Calcular as propriedades de um único material pode levar horas ou dias de tempo de computação, o que torna a exploração sistemática de milhares de candidatos impraticável.
+ 
+-É neste cenário que o aprendizado de máquina (\textit{machine learning}, ML) se apresenta como uma ferramenta promissora e complementar. Ao treinar modelos em bancos de dados de materiais existentes, cujas propriedades foram determinadas experimentalmente ou por simulação, o ML pode aprender as complexas e muitas vezes não-lineares relações entre a estrutura, a composição química e as propriedades eletrônicas de um material e sua propensão a se tornar um supercondutor. Essa abordagem, impulsionada por dados, não substitui a teoria ou o experimento, mas atua como um poderoso filtro, capaz de identificar candidatos promissores para uma investigação mais aprofundada, acelerando drasticamente o ciclo de descoberta de materiais \cite{stanev2018, himanen2019}.
++É neste cenário que o aprendizado de máquina (\textit{machine learning}, ML) se apresenta como uma ferramenta promissora e complementar. Ao treinar modelos em bancos de dados de materiais existentes, cujas propriedades foram determinadas experimentalmente ou por simulação, o ML pode aprender as complexas e muitas vezes não-lineares relações entre a estrutura, a composição química e as propriedades eletrônicas de um material e sua propensão a se tornar um supercondutor. Essa abordagem, impulsionada por dados, não substitui a teoria ou o experimento, mas atua como um poderoso filtro, capaz de identificar candidatos promissores para uma investigação mais aprofundada, acelerando drasticamente o ciclo de descoberta de materiais \cite{stanev2018, himanen2020}.
+ 
+ A aplicação de ML à ciência de materiais, frequentemente chamada de \textit{Materials Informatics}, tem crescido exponencialmente na última década. Diversos estudos demonstraram a capacidade de modelos de ML de prever propriedades como temperatura de fusão, dureza, condutividade térmica e, crucialmente, a temperatura crítica de supercondutores \cite{hamidieh2018}. A vantagem do ML reside em sua capacidade de capturar padrões complexos em dados de alta dimensão, que seriam difíceis ou impossíveis de discernir por métodos analíticos tradicionais.
+ 
+@@ -131,13 +132,21 @@
+ 
+ \section{Aplicações Tecnológicas e Importância do Problema}
+ 
+-A descoberta de novos supercondutores, especialmente aqueles com altas temperaturas críticas, tem implicações tecnológic =============================================================================
++A descoberta de novos supercondutores, especialmente aqueles com altas temperaturas críticas, tem implicações tecnológicas profundas e transversais. A ausência de resistência elétrica habilita a transmissão de energia em larga escala sem perdas dissipativas, atualmente impossível em redes convencionais, onde estima-se que 5\% a 10\% da energia gerada seja perdida em forma de calor. Cabos supercondutores comerciais, fabricados com materiais como Bi-2212 e YBCO, já são empregados em projetos-piloto de redes urbanas, mas seu uso massivo permanece limitado pela necessidade de criogenia. A descoberta de supercondutores que operem em temperaturas mais elevadas reduziria drasticamente esses custos.
++
++No domínio do transporte, sistemas de levitação magnética (MagLev) baseados em supercondutores Tipo II, que aprisionam fluxo magnético em vórtices de Abrikosov, já operam comercialmente no Japão e na China, alcançando velocidades superiores a 600 km/h. Em medicina diagnóstica, eletroímãs supercondutores fornecem os campos magnéticos intensos (1.5--7 T) necessários à ressonância magnética nuclear (MRI), tecnologia onipresente na medicina contemporânea. Em física de altas energias, aceleradores como o LHC (CERN) dependem criticamente de magnetos supercondutores de NbTi e Nb$_3$Sn para curvar feixes de prótons em órbitas estáveis.
++
++Aplicações emergentes incluem o uso de junções Josephson em \textit{qubits} supercondutores, que constituem hoje uma das plataformas líderes em computação quântica (Google, IBM, Rigetti). Os SQUIDs (\textit{Superconducting Quantum Interference Devices}) são magnetômetros ultrassensíveis, capazes de detectar campos magnéticos da ordem de \SI{e-15}{\tesla}, com aplicações em magnetoencefalografia, prospecção geológica e detecção de matéria escura. Em fusão nuclear controlada, reatores do tipo \textit{tokamak} (ITER, SPARC) utilizam bobinas supercondutoras de alto campo para confinar plasmas de deutério-trítio a temperaturas superiores a \SI{e8}{\kelvin}.
++
++O denominador comum dessas aplicações é a necessidade de resfriamento criogênico, tipicamente abaixo de 77 K (nitrogênio líquido) ou mesmo 4 K (hélio líquido). A busca por supercondutores à temperatura ambiente, sob pressões acessíveis, representaria uma revolução tecnológica comparável à introdução do transistor de silício. Estima-se que apenas o impacto na transmissão e armazenamento de energia justificaria investimentos massivos em pesquisa. Neste contexto, métodos computacionais que acelerem a triagem de candidatos promissores --- como o aprendizado de máquina explorado neste trabalho --- assumem importância estratégica.
++
++% =============================================================================
+ % CAPÍTULO 2: REVISÃO TEÓRICA - FÍSICA DA SUPERCONDUTIVIDADE
+ % =============================================================================
+ \chapter{Revisão Teórica: Física da Supercondutividade}
+ \label{chap:fisica}
+ 
+-Neste capítulo, apresentamos os conceitos fundamentais da física da supercondutividade, fornecendo a base teórica necessária para a compreensão do problema de classificação e a interpretação dos resultados obtidos com os modelos de aprendizado de máquina.
++Neste capítulo, apresentamos os conceitos fundamentais da física da supercondutividade, fornecendo a base teórica necessária para a compreensão do problema de classificação e a interpretação dos resultados obtidos com os modelos de aprendizado de máquina. A exposição segue, em linhas gerais, as referências clássicas Tinkham \cite{tinkham1996}, de Gennes \cite{degennes1966} e Ashcroft-Mermin \cite{ashcroft1976}.
+ 
+ \section{Fenomenologia da Supercondutividade}
+ 
+@@ -385,7 +394,7 @@
+ 
+ \subsection{Hidretos sob Alta Pressão: A Nova Fronteira}
+ 
+-Uma das descobertas mais empolgantes das últimas décadas foi a observação de supercondutividade em hidretos sob pressões extremas. Em 2015, Drozdov et al. relataram supercondutividade em H$_3$S a 203 K sob uma pressão de 150 GPa, quebrando o recorde de $T_c$. Mais recentemente, em 2020, foi reportada supercondutividade em LaH$_{10}$ a aproximadamente 250 K (cerca de $-23$ °C) sob 170 GPa, aproximando-se da temperatura ambiente.
++Uma das descobertas mais empolgantes das últimas décadas foi a observação de supercondutividade em hidretos sob pressões extremas. Em 2015, Drozdov et al. \cite{drozdov2015} relataram supercondutividade em H$_3$S a 203 K sob uma pressão de 150 GPa, quebrando o recorde de $T_c$. Mais recentemente, em 2019, foi reportada supercondutividade em LaH$_{10}$ a aproximadamente 250 K (cerca de $-23$ °C) sob 170 GPa \cite{drozdov2019}, aproximando-se da temperatura ambiente.
+ 
+ Esses materiais são considerados supercondutores convencionais no sentido de que o pareamento é mediado por fônons, mas as altas temperaturas críticas são possíveis devido a:
+ 
+@@ -489,7 +498,7 @@
+ 
+ \section{Multilayer Perceptron (MLP)}
+ 
+-O Multilayer Perceptron (MLP) é o arquétipo de uma rede neural artificial \textit{feedforward}. Ele consiste em uma camada de entrada, uma ou mais camadas ocultas (\textit{hidden layers}) e uma camada de saída. A capacidade do MLP de aprender representações complexas e não-lineares reside na composição de transformações lineares (multiplicações por matrizes de peso) com funções de ativação não-lineares \cite{rumelhart1986}.
++O Multilayer Perceptron (MLP) é o arquétipo de uma rede neural artificial \textit{feedforward}. Ele consiste em uma camada de entrada, uma ou mais camadas ocultas (\textit{hidden layers}) e uma camada de saída. A capacidade do MLP de aprender representações complexas e não-lineares reside na composição de transformações lineares (multiplicações por matrizes de peso) com funções de ativação não-lineares \cite{rumelhart1986}. O teorema da aproximação universal \cite{cybenko1989} garante, ademais, que uma rede com pelo menos uma camada oculta e número suficiente de neurônios pode aproximar qualquer função contínua em um domínio compacto, embora não forneça receita para obter os pesos.
+ 
+ \subsection{Arquitetura e Propagação Direta (Forward Pass)}
+ 
+@@ -603,7 +612,10 @@
+     \item \textbf{Exclusive Feature Bundling (EFB):} Agrupa \textit{features} mutuamente exclusivas (que raramente assumem valores não-nulos simultaneamente) em uma única \textit{feature}, reduzindo a dimensionalidade do problema.
+ \end{itemize}
+ 
+-Além disso, o LightGBM utiliza um crescimento de árvore \textit{leaf-wise} (por folha), em contraste com o crescimento \textit{level-wise} (por nível) do XGBoost. O crescimento \textit{leaf-wise} escolhe a folha com a maior redução de perda para expandir, o que geralmente leva a uma convergência mais rápida e a modelos mais precisos, embora possa ser mais propenso a \textit{overfitting} em conjuntos de dados pequenos\subsubsection{SISSO: Regressão Simbólica para Descoberta de Leis Físicas}
++Além disso, o LightGBM utiliza um crescimento de árvore \textit{leaf-wise} (por folha), em contraste com o crescimento \textit{level-wise} (por nível) do XGBoost. O crescimento \textit{leaf-wise} escolhe a folha com a maior redução de perda para expandir, o que geralmente leva a uma convergência mais rápida e a modelos mais precisos, embora possa ser mais propenso a \textit{overfitting} em conjuntos de dados pequenos.
++
++\section{SISSO: Regressão Simbólica para Descoberta de Leis Físicas}
++\label{sec:sisso}
+ 
+ O SISSO (\textit{Sure Independence Screening and Sparsifying Operator}) \cite{ouyang2018} é uma abordagem de regressão simbólica que se destaca por sua capacidade de descobrir expressões analíticas interpretáveis a partir de dados de alta dimensão. Diferente dos outros modelos apresentados, o objetivo do SISSO não é apenas prever, mas encontrar a \textbf{forma funcional} da relação entre as \textit{features} e o alvo.
+ 
+@@ -625,7 +637,8 @@
+ 
+ % =============================================================================
+ % CAPÍTULO 4: METODOLOGIA
+-% =============================================================================\chapter{Metodologia}
++% =============================================================================
++\chapter{Metodologia}
+ \label{chap:metodologia}
+ 
+ Este capítulo descreve em detalhes os procedimentos adotados para o desenvolvimento deste trabalho, desde a obtenção e preparação dos dados até a implementação e avaliação dos modelos de aprendizado de máquina.
+@@ -633,7 +646,7 @@
+ \section{Origem do Trabalho: Versão Embrionária}
+ \label{sec:versao_embrionaria}
+ 
+-O presente TCC é uma extensão significativa de um trabalho anterior desenvolvido no contexto da disciplina de Física Computacional da UFABC \cite{delucca2026}. Naquela versão embrionária, formatada como um artigo curto de 5 páginas no estilo \textit{Physical Review}, foram investigados três modelos de aprendizado de máquina --- Random Forest, SVM e XGBoost --- aplicados ao mesmo conjunto de dados de 2.474 materiais com 132 características de estrutura eletrônica.
++O presente TCC é uma extensão significativa de um trabalho anterior desenvolvido no contexto da disciplina de Física Computacional da UFABC \cite{delucca2025}. Naquela versão embrionária, formatada como um artigo curto de 5 páginas no estilo \textit{Physical Review}, foram investigados três modelos de aprendizado de máquina --- Random Forest, SVM e XGBoost --- aplicados ao mesmo conjunto de dados de 2.474 materiais com 132 características de estrutura eletrônica.
+ 
+ As premissas do trabalho inicial eram:
+ \begin{enumerate}
+@@ -680,13 +693,15 @@
+ Uma etapa crucial em qualquer projeto de aprendizado de máquina é o pré-processamento dos dados. As seguintes etapas foram realizadas:
+ 
+ \begin{enumerate}
+-    \item \textbf{Definição do Problema de Classificação:} A variável alvo contínua, $T_c$, foi convertida em uma variável binária. Materiais com $T_c > 0$ K foram rotulados como classe 1 (supercondutor), e materiais com $T_c = 0$ K ou valores ausentes foram rotulados como classe 0 (não-supercondutor). Isso resultou em um conjunto de dados com 1362 supercondutores (55.1\%) e 1112 não-supercondutores (44.9\%), um conjunto relativamente balanceado.
++    \item \textbf{Definição do Problema de Classificação:} A variável alvo contínua, $T_c$, foi convertida em uma variável binária. Materiais com $T_c > 0$ K foram rotulados como classe 1 (supercondutor); materiais com $T_c = 0$ K e materiais com $T_c$ ausente foram rotulados como classe 0 (não-supercondutor). A inspeção dos dados revelou 1362 supercondutores confirmados ($T_c > 0$), apenas 1 material com $T_c = 0$ K explicitamente medido, e 1111 materiais sem valor de $T_c$ reportado. Esta rotulagem segue a convenção adotada na literatura (Stanev et al., 2018 \cite{stanev2018}; Hamidieh, 2018 \cite{hamidieh2018}), mas introduz uma aproximação: alguns dos 1111 materiais ``não testados'' podem, na verdade, ser supercondutores ainda não caracterizados, o que adiciona ruído à classe negativa. Uma abordagem mais rigorosa seria a aplicação de \textit{Positive-Unlabeled (PU) Learning}, que trata os $T_c$ ausentes como amostras não rotuladas em vez de evidência negativa. Esta alternativa, implementada de forma esquemática no notebook de pré-processamento (\texttt{00\_pipeline\_preprocessamento.py}), permanece como direção para trabalhos futuros. A distribuição final foi de 1362 supercondutores (55.1\%) e 1112 não-supercondutores (44.9\%), um conjunto balanceado.
+     
+-    \item \textbf{Limpeza de Dados:} Colunas não-numéricas e identificadores (como \texttt{group\_id} e \texttt{id}) foram removidos. Colunas com mais de 50\% de valores ausentes também foram descartadas para evitar a introdução de ruído excessivo.
++    \item \textbf{Limpeza de Dados:} Colunas não-numéricas e identificadores (como \texttt{id}) foram removidos. Colunas com mais de 50\% de valores ausentes foram descartadas (68 \textit{features} removidas), bem como \textit{features} com variância zero (7 removidas). O identificador \texttt{group\_id} foi preservado separadamente, para uso no controle de \textit{data leakage} (ver item 5).
+     
+     \item \textbf{Imputação de Valores Ausentes:} Os valores ausentes restantes foram preenchidos utilizando a mediana da respectiva coluna. A mediana foi escolhida em vez da média por ser mais robusta a \textit{outliers}.
+     
+-    \item \textbf{Escalonamento de Features:} Para os modelos sensíveis à escala das \textit{features} (SVM, MLP, LASSO), foi aplicado o \texttt{StandardScaler}, que transforma cada \textit{feature} para ter média 0 e desvio padrão 1: $x' = (x - \mu) / \sigma$.
++    \item \textbf{Escalonamento de Features:} Para os modelos sensíveis à escala das \textit{features} (SVM, MLP, LASSO), foi aplicado o \texttt{StandardScaler}, que transforma cada \textit{feature} para ter média 0 e desvio padrão 1: $x' = (x - \mu) / \sigma$. O \textit{scaler} foi ajustado exclusivamente no conjunto de treino e aplicado ao conjunto de teste, evitando vazamento de informação.
++
++    \item \textbf{Controle de Data Leakage via GroupShuffleSplit:} Materiais pertencentes à mesma família estrutural (compartilhando \texttt{group\_id}) podem possuir descritores muito semelhantes. Se aparecem simultaneamente no treino e no teste, o modelo pode memorizar a família em vez de aprender o fenômeno físico, gerando estimativas otimistas. Para evitar este viés, a divisão treino/teste (80\%/20\%) foi realizada com \texttt{GroupShuffleSplit}, garantindo separação completa entre os grupos. Verificou-se explicitamente que a interseção dos grupos entre os dois conjuntos é nula (\texttt{overlap = 0}). O resultado foi 1979 amostras de treino (55.0\% SC) e 495 de teste (55.2\% SC). Este controle é responsável por uma fração da queda nas métricas reportadas em relação à versão preliminar do trabalho \cite{delucca2025}, e é uma das principais razões pelas quais os resultados aqui apresentados são considerados estimativas honestas do desempenho em materiais genuinamente novos.
+ \end{enumerate}
+ 
+ Após o pré-processamento, o número de \textit{features} utilizadas para o treinamento foi reduzido para 54.
+@@ -745,7 +760,9 @@
+ 
+ \section{Considerações sobre Hiperparâmetros e Overfitting}
+ 
+-A escolha dos hiperparâmetros de cada modelo é crucial para o desempenho e a generalização. Neste trabalho, os hiperparâmetros foram definidos com base em valores padrão bem estabelecidos na literatura, sem uma busca exaustiva (\textit{grid search} ouA escolha dos hiperparâmetros de cada modelo é crucial para o desempenho e a generalização. Neste trabalho, os hiperparâmetros foram definidos com base em valores padrão bem estabelecidos na literatura, sem uma busca exaustiva (\textit{grid search}). Essa escolha foi motivada pelo tamanho modesto do dataset, onde uma busca exaustiva poderia levar a \textit{overfitting}, e pelo foco do trabalho na interpretabilidade física em detrimento da otimização máxima do desempenho. Para mitigar o risco de \textit{overfitting}, foram utilizadas estratégias como validação cruzada, regularização e limitação da complexidade dos modelos. =============================================================================
++A escolha dos hiperparâmetros de cada modelo é crucial para o desempenho e a generalização. Neste trabalho, os hiperparâmetros foram otimizados via \texttt{RandomizedSearchCV} com 20 iterações por modelo e validação cruzada estratificada de 5 folds, utilizando F1-Score como métrica de seleção. Os espaços de busca, definidos em \texttt{notebooks\_treino/09\_hyperparameter\_tuning.py}, cobrem as principais dimensões de cada algoritmo (profundidade, número de estimadores, taxa de aprendizado, regularização, arquitetura da rede). É importante notar que a busca em grade (ou aleatorizada) por hiperparâmetros, quando combinada com validação cruzada apropriada, é o procedimento padrão para mitigar \textit{overfitting} e não para introduzi-lo. Os melhores parâmetros encontrados para cada modelo estão sumarizados no Apêndice \ref{app:implementacao}.
++
++% =============================================================================
+ % CAPÍTULO 5: RESULTADOS E DISCUSSÃO
+ % =============================================================================
+ \chapter{Resultados e Discussão}
+@@ -776,18 +793,18 @@
+ 
+ \begin{table}[H]
+     \centering
+-    \caption{Resultados de desempenho dos modelos no conjunto de teste.}
++    \caption{Resultados de desempenho dos modelos no conjunto de teste, após otimização de hiperparâmetros via \texttt{RandomizedSearchCV} e com controle de \textit{data leakage} via \texttt{GroupShuffleSplit}.}
+     \label{tab:resultados}
+     \begin{tabular}{lccccc}
+         \toprule
+         \textbf{Modelo} & \textbf{Acurácia} & \textbf{Precisão} & \textbf{Recall} & \textbf{F1-Score} & \textbf{ROC-AUC} \\
+         \midrule
+-        Random Forest & 0.6727 & 0.6729 & 0.7912 & \textbf{0.7233} & \textbf{0.6514} \\
+-        XGBoost & 0.6606 & 0.6744 & 0.7436 & 0.7073 & 0.7230 \\
+-        LightGBM & 0.6566 & 0.6700 & 0.7436 & 0.7049 & 0.7200 \\
+-        SVM (RBF) & 0.6444 & 0.6655 & 0.7143 & 0.6890 & 0.6670 \\
+-        MLP & 0.6081 & 0.6100 & 0.8022 & 0.6930 & 0.6400 \\
+-        LASSO (L1) & 0.5657 & 0.5843 & 0.7363 & 0.6515 & 0.5936 \\
++        Random Forest & 0.6242 & 0.6090 & 0.8901 & \textbf{0.7232} & 0.6509 \\
++        XGBoost & \textbf{0.6586} & 0.6699 & 0.7509 & 0.7081 & \textbf{0.7243} \\
++        LightGBM & 0.6545 & 0.6711 & 0.7326 & 0.7005 & 0.7068 \\
++        SVM (RBF) & 0.5697 & 0.5628 & 0.9853 & 0.7164 & 0.6655 \\
++        MLP & 0.5576 & 0.5646 & 0.8645 & 0.6831 & 0.5575 \\
++        LASSO (L1) & 0.5515 & 0.5515 & 1.0000 & 0.7109 & 0.5000 \\
+         \bottomrule
+     \end{tabular}
+ \end{table}
+@@ -799,9 +816,15 @@
+     \label{fig:comp_metricas}
+ \end{figure}
+ 
+-Os modelos baseados em árvores de decisão (Random Forest, XGBoost, LightGBM) apresentaram o melhor desempenho geral. O \textbf{Random Forest} foi o campeão, com o maior F1-Score (0.7233) e ROC-AUC (0.6514). Isso sugere que a capacidade do Random Forest de reduzir a variância através do \textit{bagging} e da aleatorização de \textit{features} é particularmente eficaz para este tipo de dados, que pode conter ruído e relações não-lineares complexas.
++Os modelos baseados em árvores de decisão (Random Forest, XGBoost, LightGBM) apresentaram o melhor desempenho geral em termos de equilíbrio entre as métricas. O \textbf{Random Forest} atingiu o maior F1-Score (0.7232), favorecido por seu alto \textit{recall} (0.8901), o que é desejável em contextos de triagem onde minimizar Falsos Negativos é prioritário. Já o \textbf{XGBoost} obteve a maior acurácia (0.6586) e o maior ROC-AUC (0.7243), indicando melhor capacidade discriminativa global e calibração das probabilidades. A escolha entre os dois depende do critério: F1 (custo simétrico entre Falsos Positivos e Negativos) ou ROC-AUC (capacidade de \textit{ranking} entre classes).
++
++Um resultado que merece destaque é o comportamento do \textbf{LASSO}, que após a otimização de hiperparâmetros convergiu para um classificador essencialmente trivial: \textit{recall} de 100\% e ROC-AUC de 0.5000, ou seja, prevê ``supercondutor'' para todas as amostras do conjunto de teste. O hiperparâmetro ótimo encontrado ($C = 0.001$, regularização forte) zerou virtualmente todos os coeficientes, levando o modelo a apenas reproduzir a classe majoritária. Este colapso não é uma falha do método, mas sim uma \textit{informação científica}: indica que um modelo linear simples, mesmo com seleção de variáveis via L1, é incapaz de capturar a estrutura intrinsecamente não-linear que separa supercondutores de não-supercondutores no espaço de descritores utilizado. Este achado reforça a justificativa para o emprego de modelos não-lineares como Random Forest, XGBoost e LightGBM.
++
++O \textbf{SVM com kernel RBF}, embora alcance F1 razoável (0.7164), também exibe \textit{recall} próximo de 1 (0.9853) com precisão baixa (0.5628), indicando comportamento de classificador permissivo. O \textbf{MLP}, com a arquitetura otimizada (200, 100, 50), apresentou o pior ROC-AUC entre os modelos não-triviais (0.5575), possivelmente devido à dificuldade de generalização em um conjunto de treino relativamente pequeno (1979 amostras) com 53 \textit{features}.
+ 
+-O MLP, apesar de seu alto recall (0.8022), sofreu de baixa precisão (0.6100), indicando uma tendência a classificar materiais como supercondutores de forma mais liberal, gerando muitos falsos positivos. O modelo LASSO teve o desempenho mais fraco, com um ROC-AUC de apenas 0.5936, sugerindo que um modelo linear simples, mesmo com regularização, não é suficiente para capturar a complexa relação entre os descritores e a supercondutividade.
++\medskip
++
++\noindent\textbf{Nota metodológica sobre a queda de desempenho.} As métricas reportadas na Tabela \ref{tab:resultados} são inferiores às obtidas na versão preliminar deste trabalho \cite{delucca2025}. Esta queda é consequência direta do controle rigoroso de \textit{data leakage} adotado nesta versão: a divisão treino/teste foi realizada com \texttt{GroupShuffleSplit}, garantindo que materiais pertencentes ao mesmo grupo estrutural não apareçam simultaneamente em ambos os conjuntos (sobreposição de grupos = 0). Avaliações sem este controle geram estimativas otimistas, pois o modelo memoriza padrões de famílias de materiais inteiras. As métricas aqui reportadas refletem, portanto, o desempenho real esperado em materiais genuinamente novos.
+ 
+ As curvas ROC (Figura \ref{fig:roc}) e Precision-Recall (Figura \ref{fig:pr}) confirmam a superioridade dos modelos de \textit{ensemble} de árvores.
+ 
+@@ -868,7 +891,96 @@
+ 
+ Uma análise notável emerge: em ambos os modelos, as \textit{features} mais importantes estão relacionadas à \textbf{densidade de estados eletrônicos (DOS)} e à \textbf{estrutura de bandas} no nível de Fermi. Descritores como \texttt{sc\_DOSs\_mean}, \texttt{sc\_bands\_mean}, \texttt{sc\_DOSs\_min}, e \texttt{sc\_bands\_std} dominam o topo da lista. Este resultado é fisicamente muito significativo.
+ 
+-De acordo com a teoria BCS (Equação 2.10), a temperatura crítica $T_c$ é exponencialmente dependente da densidade de estados no nível de Fermi, $N(0)$. Uma alta densidade de estados significa que há mais elétrons disponíveis para formar pares de Cooper, favorecendo o estado supercondutor. O fato de os modelos de aprendizado de máquina, sem nenhum conhecimento prévio da teoria BCS, terem identificado a DOS como o fator mais preditivo é uma forte validação da abordagem e demonstra a capacidade do ML de extrair conhecimento físico a partir de dados.
++De acordo com a teoria BCS (Equação 2.10), a temperatura crítica $T_c$ é exponencialmente dependente da densidade de estados no nível de Fermi, $N(0)$. Uma alta densidade de estados significa que há mais elétrons disponíveis para formar pares de Cooper, favorecendo o estado supercondutor. O fato de os modelos de aprendizado de máquina, sem incorporar explicitamente a teoria BCS, terem identificado a DOS como o fator mais preditivo é uma validação \textit{a posteriori} consistente com a expectativa teórica, e ilustra a capacidade do ML de capturar assinaturas físicas relevantes a partir de dados.
++
++\section{Comparação Estatística entre Modelos}
++\label{sec:estatistica}
++
++A diferença entre as métricas pontuais reportadas na Tabela \ref{tab:resultados} pode ser pequena, e portanto é essencial avaliar se essas diferenças são estatisticamente significativas. Para isso, foram aplicados três testes complementares (notebook \texttt{07\_analise\_comparativa.py}): (i) validação cruzada estratificada de 5 folds, (ii) testes pareados de McNemar nas predições do conjunto de teste, e (iii) teste de Friedman sobre os \textit{ranks} dos modelos nos folds da CV, com intervalos de confiança \textit{bootstrap} de 95\%.
++
++\begin{table}[H]
++    \centering
++    \caption{Intervalos de confiança \textit{bootstrap} de 95\% (1000 reamostragens) para F1-Score, ROC-AUC e Acurácia no conjunto de teste.}
++    \label{tab:bootstrap}
++    \begin{tabular}{lccc}
++        \toprule
++        \textbf{Modelo} & \textbf{F1 [IC 95\%]} & \textbf{ROC-AUC [IC 95\%]} & \textbf{Acurácia [IC 95\%]} \\
++        \midrule
++        Random Forest & 0.722 [0.682, 0.761] & 0.651 [0.599, 0.701] & 0.624 [0.582, 0.669] \\
++        XGBoost       & 0.708 [0.663, 0.751] & 0.725 [0.681, 0.768] & 0.659 [0.616, 0.703] \\
++        LightGBM      & 0.701 [0.659, 0.744] & 0.708 [0.663, 0.753] & 0.656 [0.616, 0.701] \\
++        SVM (RBF)     & 0.715 [0.679, 0.752] & 0.666 [0.617, 0.714] & 0.569 [0.527, 0.614] \\
++        MLP           & 0.681 [0.640, 0.720] & 0.556 [0.505, 0.604] & 0.556 [0.511, 0.598] \\
++        LASSO (L1)    & 0.710 [0.673, 0.745] & 0.500 [0.500, 0.500] & 0.551 [0.507, 0.594] \\
++        \bottomrule
++    \end{tabular}
++\end{table}
++
++O teste de \textbf{Friedman} sobre os F1-Scores da validação cruzada de 5 folds resultou em $\chi^2 = 10{,}83$ com $p = 0{,}055$. Este valor está marginalmente acima do limiar convencional de 5\%, indicando \textbf{ausência de diferença estatisticamente significativa} entre os seis modelos a esse nível, embora muito próximo de significância. Os \textit{ranks} médios foram: SVM (1.8), Random Forest (2.6), LASSO (3.2), XGBoost (3.8), LightGBM (4.4) e MLP (5.2).
++
++O teste de \textbf{McNemar} pareado nas predições do conjunto de teste, por outro lado, revela diferenças significativas entre subgrupos de modelos. Em particular, os três modelos de árvore (RF, XGBoost, LightGBM) diferem significativamente do trio MLP/LASSO ($p < 0{,}01$ em todas as comparações), mas não diferem entre si ($p > 0{,}10$). O SVM, por sua vez, ocupa uma posição intermediária. A Figura \ref{fig:mcnemar} apresenta a matriz completa de p-valores.
++
++\begin{figure}[H]
++    \centering
++    \begin{subfigure}{0.48\textwidth}
++        \includegraphics[width=\linewidth]{graficos/07_mcnemar_pvalues.png}
++        \caption{Matriz de p-valores McNemar}
++        \label{fig:mcnemar}
++    \end{subfigure}
++    \hfill
++    \begin{subfigure}{0.48\textwidth}
++        \includegraphics[width=\linewidth]{graficos/07_bootstrap_ci.png}
++        \caption{IC 95\% \textit{bootstrap} das métricas}
++        \label{fig:boot}
++    \end{subfigure}
++    \caption{Análise estatística comparativa. (a) Diferenças significativas entre modelos de árvore e MLP/LASSO; entre RF, XGBoost e LightGBM não há diferença significativa. (b) Sobreposição extensa dos intervalos confirma equivalência prática.}
++\end{figure}
++
++A conclusão metodológica é que, com o tamanho de amostra disponível e o controle de \textit{data leakage} adotado, \textbf{Random Forest, XGBoost e LightGBM são estatisticamente equivalentes} em termos de F1, com diferenças pontuais que devem ser interpretadas com cautela. A escolha do ``melhor modelo'' depende, portanto, do critério prático (recall vs. discriminação) e não de superioridade estatística inequívoca.
++
++\section{Análise SHAP: Interpretabilidade Global e Local}
++\label{sec:shap}
++
++Para aprofundar a análise de interpretabilidade além da importância de \textit{features} agregada, foi aplicada a metodologia SHAP (\textit{SHapley Additive exPlanations}), que atribui a cada \textit{feature} de cada amostra uma contribuição aditiva à predição, com fundamentação na teoria de jogos cooperativos. A Figura \ref{fig:shap_summary} apresenta o \textit{summary plot} global das 20 \textit{features} mais relevantes para o Random Forest.
++
++\begin{figure}[H]
++    \centering
++    \includegraphics[width=0.95\textwidth]{graficos/24_shap_summary.png}
++    \caption{Diagrama SHAP \textit{summary} (\textit{beeswarm}) das 20 \textit{features} mais importantes para o Random Forest. A posição horizontal indica a contribuição da \textit{feature} para a predição (positivo $\to$ supercondutor); a cor indica o valor da \textit{feature} (vermelho = alto, azul = baixo).}
++    \label{fig:shap_summary}
++\end{figure}
++
++A análise SHAP confirma e refina os achados da importância clássica: as \textit{features} \texttt{sc\_DOSs\_mean} e \texttt{sc\_DOSs\_min}, bem como descritores da estrutura de bandas no nível de Fermi (\texttt{sc\_bands\_*}), dominam as predições. Valores altos da DOS média estão sistematicamente associados a contribuições SHAP positivas (deslocando a predição para a classe ``supercondutor''), em consonância direta com a expectativa BCS.
++
++\section{Calibração de Probabilidades}
++\label{sec:calibracao}
++
++Além da capacidade discriminativa medida pelo ROC-AUC, é importante avaliar se as probabilidades preditas pelos modelos refletem adequadamente as frequências observadas --- uma propriedade conhecida como \textit{calibração}. Um modelo bem calibrado é fundamental quando suas predições são utilizadas como entrada de processos de decisão (e.g., priorização de candidatos para síntese experimental).
++
++A Figura \ref{fig:calib} apresenta o \textit{reliability diagram} dos dois melhores modelos (Random Forest e XGBoost), junto com seus \textit{Brier scores}.
++
++\begin{figure}[H]
++    \centering
++    \includegraphics[width=0.7\textwidth]{graficos/27_calibration.png}
++    \caption{Diagrama de calibração (\textit{reliability diagram}) para Random Forest e XGBoost. A linha diagonal indica calibração perfeita. \textit{Brier score}: RF = 0.234, XGBoost = 0.232 (menor é melhor).}
++    \label{fig:calib}
++\end{figure}
++
++Ambos os modelos apresentam \textit{Brier scores} similares (RF: 0.234, XGBoost: 0.232), com calibração razoável mas distante da ideal. As curvas exibem leve sobre-confiança em probabilidades intermediárias. Para uso prático em triagem, recomenda-se a aplicação de técnicas de calibração \textit{a posteriori}, como Platt scaling ou regressão isotônica.
++
++\section{Curva de Aprendizado}
++\label{sec:learning}
++
++A curva de aprendizado (Figura \ref{fig:learning}) mostra o F1-Score do Random Forest e do XGBoost em função do tamanho do conjunto de treino (10\%, 25\%, 50\%, 75\% e 100\%). Esta análise informa se mais dados conduziriam a melhor desempenho ou se o regime de saturação já foi atingido.
++
++\begin{figure}[H]
++    \centering
++    \includegraphics[width=0.7\textwidth]{graficos/28_learning_curve.png}
++    \caption{Curva de aprendizado: F1-Score em função do tamanho do treino. A diferença pequena entre as curvas de treino e validação no extremo direito indica baixo \textit{overfitting}; a inclinação remanescente sugere que dados adicionais ainda trariam ganhos modestos.}
++    \label{fig:learning}
++\end{figure}
++
++O comportamento observado --- ganho contínuo, ainda que decrescente, com o tamanho do treino --- sugere que o desempenho atual não está saturado e que a expansão do banco de dados (e.g., agregando o NIMS SuperCon e outros repositórios) poderia trazer melhorias incrementais nos modelos. Esta observação reforça a discussão das Limitações (Seção \ref{sec:limitacoes}).
+ 
+ \section{Análise de Interpretabilidade: Partial Dependence Plots}
+ 
+@@ -947,7 +1059,7 @@
+     \label{fig:sisso_pred}
+ \end{figure}
+ 
+-O resultado mais importante é a proeminência da densidade de estados ($D_{min}$) como a \textit{feature} mais influente, aparecendo em 4 dos 5 termos da equação. Isso corrobora a teoria BCS, que prevê uma dependência exponencial de $T_c$ com a densidade de estados no nível de Fermi. O SISSO, de forma autônoma, "redescobriu" a importância central deste descritor físico.
++O resultado mais importante é a proeminência da densidade de estados ($D_{min}$) como a \textit{feature} mais influente, aparecendo em 4 dos 5 termos da equação. Isso é \textbf{consistente} com a expectativa BCS, que prevê uma dependência exponencial de $T_c$ com a densidade de estados no nível de Fermi. Cabe ressaltar, porém, que o desempenho preditivo do modelo é modesto ($R^2 = 0{,}35$ na configuração 2D e $R^2 = 0{,}53$ em 3D no conjunto de teste), o que limita o peso interpretativo da equação descoberta. O SISSO deve ser entendido aqui como uma análise exploratória que sugere a direção dos descritores físicos mais relevantes, não como uma lei fenomenológica validada.
+ 
+ \begin{figure}[H]
+     \centering
+@@ -977,19 +1089,20 @@
+ 
+ Este trabalho demonstrou com sucesso a aplicação de técnicas de aprendizado de máquina para a classificação de materiais supercondutores. Ao utilizar um conjunto de descritores físicos derivados de propriedades atômicas e eletrônicas, foi possível treinar modelos capazes de distinguir entre materiais supercondutores e não-supercondutores com um desempenho significativo, validando a hipótese de que as assinaturas da supercondutividade estão codificadas nas propriedades fundamentais dos materiais.
+ 
+-O modelo Random Forest emergiu como o mais eficaz, alcançando um F1-Score de 0.723 e um ROC-AUC de 0.651 no conjunto de teste. Mais importante do que o desempenho preditivo em si foi a análise da interpretabilidade do modelo. A identificação da densidade de estados eletrônicos (DOS) e das características da superfície de Fermi como os descritores mais importantes estabelece uma ponte crucial entre a ciência de dados e a física da matéria condensada. Esse resultado não apenas corrobora décadas de teoria e experimentação, mas também ilustra o potencial do aprendizado de máquina como uma ferramenta para a descoberta científica, capaz de redescobrir princípios físicos a partir de dados brutos.
++O modelo Random Forest atingiu o melhor F1-Score (0.723) com alto \textit{recall} (0.890), enquanto o XGBoost obteve o melhor ROC-AUC (0.724); o teste de Friedman indicou ausência de diferença estatisticamente significativa entre os modelos de \textit{ensemble} de árvore ao nível de 5\% ($p = 0{,}055$). Mais importante do que o desempenho preditivo em si foi a análise da interpretabilidade do modelo. A identificação da densidade de estados eletrônicos (DOS) e das características da superfície de Fermi como os descritores mais importantes estabelece uma ponte entre a ciência de dados e a física da matéria condensada. Esse resultado é consistente com décadas de teoria e experimentação em supercondutividade convencional, e ilustra o potencial do aprendizado de máquina como ferramenta para a triagem orientada por descritores físicos.
+ 
+ A análise de Partial Dependence Plots confirmou a relação monotônica entre a DOS e a probabilidade de supercondutividade, em acordo direto com a teoria BCS. A análise de erro revelou que os modelos têm maior dificuldade em classificar supercondutores convencionais de baixa temperatura ($T_c < 5$ K), sugerindo que os descritores disponíveis podem não capturar completamente as nuances que distinguem esses materiais.
+ 
+ O desempenho dos modelos, embora promissor, ainda deixa espaço para melhorias. A acurácia em torno de 70\% indica que o problema é inerentemente complexo e que os descritores disponíveis, embora relevantes, podem não capturar toda a física necessária, especialmente para os supercondutores não convencionais, onde os mecanismos de pareamento ainda são debatidos.
+ 
+ \section{Limitações do Estudo}
++\label{sec:limitacoes}
+ 
+ É importante reconhecer as limitações deste trabalho:
+ 
+ \begin{enumerate}
+     \item \textbf{Tamanho do Dataset:} O conjunto de dados utilizado contém aproximadamente 2.400 amostras, o que é relativamente pequeno para padrões de aprendizado de máquina. Um dataset maior poderia permitir o treinamento de modelos mais complexos e generalizáveis.
+-    \item \textbf{Vieses no Dataset:} O banco de dados SuperCon é composto principalmente por materiais que foram estudados experimentalmente, o que pode introduzir vieses. Materiais que nunca foram sintetizados ou testados não estão representados.
++    \item \textbf{Vieses no Dataset:} O banco de dados utilizado (SciDB) é composto principalmente por materiais que foram estudados experimentalmente ou caracterizados por DFT, o que pode introduzir vieses de seleção. Materiais que nunca foram sintetizados ou simulados não estão representados. Esta é uma forma particular de viés de \textit{positive-unlabeled}: ausência de $T_c$ reportado não implica ausência de supercondutividade.
+     \item \textbf{Descritores Limitados:} Os descritores utilizados são derivados de cálculos de estrutura eletrônica e podem não capturar todas as propriedades relevantes para a supercondutividade, como a dinâmica de fônons, correlações eletrônicas fortes ou efeitos de desordem.
+     \item \textbf{Problema de Classificação Binária:} A formulação do problema como classificação binária (supercondutor vs. não-supercondutor) perde informação sobre o valor de $T_c$, que é crucial para aplicações práticas.
+ \end{enumerate}
+@@ -1029,9 +1142,11 @@
+ \begin{itemize}
+     \item \texttt{pandas} (v2.x): Manipulação e análise de dados tabulares.
+     \item \texttt{numpy} (v1.x): Operações numéricas e álgebra linear.
+-    \item \texttt{scikit-learn} (v1.x): Implementação dos modelos Random Forest, SVM, MLP e LASSO, além de ferramentas de pré-processamento e avaliação.
++    \item \texttt{scikit-learn} (v1.x) \cite{pedregosa2011}: Implementação dos modelos Random Forest, SVM, MLP e LASSO, além de ferramentas de pré-processamento e avaliação.
+     \item \texttt{xgboost} (v2.x): Implementação do modelo XGBoost.
+     \item \texttt{lightgbm} (v4.x): Implementação do modelo LightGBM.
++    \item \texttt{shap} \cite{lundberg2017}: Cálculo de valores SHAP para interpretabilidade.
++    \item \texttt{scikit-posthocs}: Teste de Nemenyi pós-Friedman.
+     \item \texttt{matplotlib} e \texttt{seaborn}: Visualização de dados e geração de gráficos.
+ \end{itemize}
+ 
+@@ -1099,7 +1214,7 @@
+ 
+ \section{Trabalhos Relacionados}
+ 
+-Diversos estudos exploraram o uso de ML para prever a temperatura crítica $T_c$ de supercondutores. Stanev et al. (2018) \cite{stanev2018} utilizaram Random Forest e Gradient Boosting para prever $T_c$ com base em descritores de composição química, alcançando um $R^2$ de aproximadamente 0.92 em um problema de regressão. Hamidieh (2018) \cite{hamidieh2018} aplicou XGBoost ao mesmo problema, com resultados similares.
++Diversos estudos exploraram o uso de ML para prever a temperatura crítica $T_c$ de supercondutores. Stanev et al. (2018) \cite{stanev2018} utilizaram Random Forest e Gradient Boosting para prever $T_c$ com base em descritores de composição química, alcançando um $R^2$ de aproximadamente 0.92 em um problema de regressão. Hamidieh (2018) \cite{hamidieh2018} aplicou XGBoost ao mesmo problema, com resultados similares. Trabalhos mais recentes incluem Roter e Dordevic (2020) \cite{roter2020}, que combinaram Random Forest e \textit{Gradient Boosting} sobre descritores de composição química e atingiram $R^2 \approx 0{,}88$ em regressão, e Konno et al. (2021) \cite{konno2021}, que aplicaram redes neurais profundas e atingiram desempenho superior, demonstrando o potencial de arquiteturas mais sofisticadas. É importante ressaltar que esses trabalhos abordam o problema como regressão de $T_c$, enquanto o presente trabalho trata classificação binária; portanto, a comparação direta de métricas não é apropriada.
+ 
+ \section{Comparação de Resultados}
+ 
+@@ -1107,15 +1222,18 @@
+ 
+ \begin{table}[H]
+     \centering
+-    \caption{Comparação de resultados com a literatura.}
++    \caption{Comparação de resultados com a literatura. As métricas são apresentadas em colunas separadas por tarefa (regressão vs. classificação), uma vez que não são diretamente comparáveis.}
+     \label{tab:comparacao_literatura}
+     \begin{tabular}{llll}
+         \toprule
+         \textbf{Estudo} & \textbf{Problema} & \textbf{Melhor Modelo} & \textbf{Métrica Principal} \\
+         \midrule
+-        Stanev et al. (2018) & Regressão de $T_c$ & Gradient Boosting & $R^2 \approx 0.92$ \\
+-        Hamidieh (2018) & Regressão de $T_c$ & XGBoost & RMSE $\approx 9.5$ K \\
+-        \textbf{Este trabalho} & Classificação & Random Forest & F1-Score = 0.723 \\
++        Stanev et al. (2018) \cite{stanev2018} & Regressão de $T_c$ & Gradient Boosting & $R^2 \approx 0.92$ \\
++        Hamidieh (2018) \cite{hamidieh2018} & Regressão de $T_c$ & XGBoost & RMSE $\approx 9.5$ K \\
++        Roter \& Dordevic (2020) \cite{roter2020} & Regressão de $T_c$ & RF + GBM & $R^2 \approx 0.88$ \\
++        Konno et al. (2021) \cite{konno2021} & Regressão de $T_c$ & Deep NN & Superior aos anteriores \\
++        \textbf{Este trabalho} & \textbf{Classificação} & Random Forest & F1 = 0.723; ROC-AUC = 0.651 \\
++        \textbf{Este trabalho} & \textbf{Classificação} & XGBoost & F1 = 0.708; ROC-AUC = 0.724 \\
+         \bottomrule
+     \end{tabular}
+ \end{table}
+@@ -1189,27 +1307,34 @@
+ % --- REFERÊNCIAS ---
+ \begin{thebibliography}{99}
+     \bibitem{onnes1911} H. K. Onnes, "The resistance of pure mercury at helium temperatures," \textit{Comm. Phys. Lab. Univ. Leiden}, vol. 12, pp. 122b, 124c, 1911.
+-    \bibitem{bcs1957} J. Bardeen, L. N. Cooper, and J. R. Schrieffer, "Theory of Superconductivity," \textit{Physical Review}, vol. 108, no. 5, pp. 1175–1204, 1957.
+-    \bibitem{bednorz1986} J. G. Bednorz and K. A. Müller, "Possible high $T_c$ superconductivity in the Ba-La-Cu-O system," \textit{Zeitschrift für Physik B Condensed Matter}, vol. 64, no. 2, pp. 189–193, 1986.
+-    \bibitem{kamihara2008} Y. Kamihara et al., "Iron-Based Layered Superconductor La[O$_{1-x}$F$_x$]FeAs (x = 0.05--0.12) with $T_c$ = 26 K," \textit{Journal of the American Chemical Society}, vol. 130, no. 11, pp. 3296–3297, 2008.
++    \bibitem{bcs1957} J. Bardeen, L. N. Cooper, and J. R. Schrieffer, "Theory of Superconductivity," \textit{Physical Review}, vol. 108, no. 5, pp. 1175--1204, 1957.
++    \bibitem{bednorz1986} J. G. Bednorz and K. A. Müller, "Possible high $T_c$ superconductivity in the Ba-La-Cu-O system," \textit{Zeitschrift für Physik B Condensed Matter}, vol. 64, no. 2, pp. 189--193, 1986.
++    \bibitem{kamihara2008} Y. Kamihara et al., "Iron-Based Layered Superconductor La[O$_{1-x}$F$_x$]FeAs (x = 0.05--0.12) with $T_c$ = 26 K," \textit{Journal of the American Chemical Society}, vol. 130, no. 11, pp. 3296--3297, 2008.
+     \bibitem{stanev2018} V. Stanev et al., "Machine learning modeling of superconducting critical temperature," \textit{npj Computational Materials}, vol. 4, no. 1, p. 29, 2018.
+-    \bibitem{himanen2019} L. Himanen et al., "DScribe: Library of descriptors for machine learning in materials science," \textit{Advanced Science}, vol. 7, no. 3, p. 1902410, 2020.
+-    \bibitem{hamidieh2018} K. Hamidieh, "A data-driven statistical model for predicting the critical temperature of a superconductor," \textit{Computational Materials Science}, vol. 154, pp. 346-354, 2018.
+-    \bibitem{london1935} F. London and H. London, "The Electromagnetic Equations of the Supraconductor," \textit{Proceedings of the Royal Society of London A}, vol. 149, no. 866, pp. 71-88, 1935.
+-    \bibitem{ginzburg1950} V. L. Ginzburg and L. D. Landau, "On the theory of superconductivity," \textit{Zh. Eksp. Teor. Fiz.}, vol. 20, pp. 1064-1082, 1950.
+-    \bibitem{tibshirani1996} R. Tibshirani, "Regression Shrinkage and Selection via the Lasso," \textit{Journal of the Royal Statistical Society. Series B}, vol. 58, no. 1, pp. 267–288, 1996.
+-    \bibitem{cortes1995} C. Cortes and V. Vapnik, "Support-vector networks," \textit{Machine Learning}, vol. 20, no. 3, pp. 273–297, 1995.
+-    \bibitem{rumelhart1986} D. E. Rumelhart, G. E. Hinton, and R. J. Williams, "Learning representations by back-propagating errors," \textit{Nature}, vol. 323, pp. 533–536, 1986.
+-    \bibitem{breiman2001} L. Breiman, "Random Forests," \textit{Machine Learning}, vol. 45, no. 1, pp. 5–32, 2001.
+-    \bibitem{friedman2001} J. H. Friedman, "Greedy Function Approximation: A Gradient Boosting Machine," \textit{Annals of Statistics}, vol. 29, no. 5, pp. 1189–1232, 2001.
+-    \bibitem{chen2016} T. Chen and C. Guestrin, "XGBoost: A Scalable Tree Boosting System," in \textit{Proceedings of the 22nd ACM SIGKDD}, 2016, pp. 785–794.
+-    \bibitem{ke2017} G. Ke et al., "LightGBM: A Highly Efficient Gradient Boosting Decision Tree," in \textit{Advances in Neural Information Processing Systems 30}, 2017, pp. 3146–3154.
+-    \bibitem{supercon} National Institute for Materials Science (NIMS), "SuperCon: Database for Superconducting Materials," Japan. [Online]. Available: https://supercon.nims.go.jp/
+-    \bibitem{delucca2026} L. M. De Lucca, "Classifica\c{c}\~ao de Supercondutores Utilizando T\'ecnicas de Aprendizado de M\'aquina," Trabalho da disciplina de F\'isica Computacional, UFABC, 2025.
+-    \bibitem{scidb2024} Chinese Academy of Sciences, "SciDB: Scientific Data Bank," [Online]. Available: https://www.scidb.cn/
++    \bibitem{himanen2020} L. Himanen et al., "DScribe: Library of descriptors for machine learning in materials science," \textit{Computer Physics Communications}, vol. 247, p. 106949, 2020.
++    \bibitem{hamidieh2018} K. Hamidieh, "A data-driven statistical model for predicting the critical temperature of a superconductor," \textit{Computational Materials Science}, vol. 154, pp. 346--354, 2018.
++    \bibitem{london1935} F. London and H. London, "The Electromagnetic Equations of the Supraconductor," \textit{Proceedings of the Royal Society of London A}, vol. 149, no. 866, pp. 71--88, 1935.
++    \bibitem{ginzburg1950} V. L. Ginzburg and L. D. Landau, "On the theory of superconductivity," \textit{Zh. Eksp. Teor. Fiz.}, vol. 20, pp. 1064--1082, 1950.
++    \bibitem{tibshirani1996} R. Tibshirani, "Regression Shrinkage and Selection via the Lasso," \textit{Journal of the Royal Statistical Society. Series B}, vol. 58, no. 1, pp. 267--288, 1996.
++    \bibitem{cortes1995} C. Cortes and V. Vapnik, "Support-vector networks," \textit{Machine Learning}, vol. 20, no. 3, pp. 273--297, 1995.
++    \bibitem{rumelhart1986} D. E. Rumelhart, G. E. Hinton, and R. J. Williams, "Learning representations by back-propagating errors," \textit{Nature}, vol. 323, pp. 533--536, 1986.
++    \bibitem{breiman2001} L. Breiman, "Random Forests," \textit{Machine Learning}, vol. 45, no. 1, pp. 5--32, 2001.
++    \bibitem{friedman2001} J. H. Friedman, "Greedy Function Approximation: A Gradient Boosting Machine," \textit{Annals of Statistics}, vol. 29, no. 5, pp. 1189--1232, 2001.
++    \bibitem{chen2016} T. Chen and C. Guestrin, "XGBoost: A Scalable Tree Boosting System," in \textit{Proceedings of the 22nd ACM SIGKDD}, 2016, pp. 785--794.
++    \bibitem{ke2017} G. Ke et al., "LightGBM: A Highly Efficient Gradient Boosting Decision Tree," in \textit{Advances in Neural Information Processing Systems 30}, 2017, pp. 3146--3154.
++    \bibitem{delucca2025} L. M. De Lucca, "Classifica\c{c}\~ao de Supercondutores Utilizando T\'ecnicas de Aprendizado de M\'aquina," Trabalho da disciplina de F\'isica Computacional, UFABC, 2025.
++    \bibitem{scidb2024} Chinese Academy of Sciences, "SciDB: Scientific Data Bank," [Online]. Available: \url{https://www.scidb.cn/}
+     \bibitem{ouyang2018} R. Ouyang, S. Curtarolo, E. Ahmetcik, M. Scheffler, and L. M. Ghiringhelli, "SISSO: A compressed-sensing method for identifying the best low-dimensional descriptor in an immensity of offered candidates," \textit{Physical Review Materials}, vol. 2, no. 8, p. 083802, 2018.
+     \bibitem{cybenko1989} G. Cybenko, "Approximation by superpositions of a sigmoidal function," \textit{Mathematics of Control, Signals and Systems}, vol. 2, no. 4, pp. 303--314, 1989.
+     \bibitem{drozdov2015} A. P. Drozdov et al., "Conventional superconductivity at 203 kelvin at high pressures in the sulfur hydride system," \textit{Nature}, vol. 525, pp. 73--76, 2015.
++    \bibitem{drozdov2019} A. P. Drozdov et al., "Superconductivity at 250 K in lanthanum hydride under high pressures," \textit{Nature}, vol. 569, pp. 528--531, 2019.
++    \bibitem{tinkham1996} M. Tinkham, \textit{Introduction to Superconductivity}, 2nd ed. New York: McGraw-Hill, 1996.
++    \bibitem{ashcroft1976} N. W. Ashcroft and N. D. Mermin, \textit{Solid State Physics}. Philadelphia: Saunders College, 1976.
++    \bibitem{degennes1966} P. G. de Gennes, \textit{Superconductivity of Metals and Alloys}. New York: W. A. Benjamin, 1966.
++    \bibitem{pedregosa2011} F. Pedregosa et al., "Scikit-learn: Machine Learning in Python," \textit{Journal of Machine Learning Research}, vol. 12, pp. 2825--2830, 2011.
++    \bibitem{lundberg2017} S. M. Lundberg and S.-I. Lee, "A Unified Approach to Interpreting Model Predictions," in \textit{Advances in Neural Information Processing Systems 30}, 2017, pp. 4765--4774.
++    \bibitem{konno2021} T. Konno et al., "Deep learning model for finding new superconductors," \textit{Physical Review B}, vol. 103, no. 1, p. 014509, 2021.
++    \bibitem{roter2020} B. Roter and S. V. Dordevic, "Predicting new superconductors and their critical temperatures using machine learning," \textit{Physica C: Superconductivity and its Applications}, vol. 575, p. 1353689, 2020.
+ \end{thebibliography}
+ 
+ \end{document}
