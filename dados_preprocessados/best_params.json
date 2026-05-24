@@ -1,0 +1,59 @@
+{
+  "best_params": {
+    "random_forest": {
+      "n_estimators": 200,
+      "min_samples_split": 10,
+      "min_samples_leaf": 2,
+      "max_features": "log2",
+      "max_depth": 5
+    },
+    "xgboost": {
+      "subsample": 0.8,
+      "reg_lambda": 0.1,
+      "reg_alpha": 1,
+      "n_estimators": 500,
+      "max_depth": 10,
+      "learning_rate": 0.05
+    },
+    "lightgbm": {
+      "subsample": 0.7,
+      "reg_lambda": 10,
+      "reg_alpha": 0.1,
+      "num_leaves": 127,
+      "n_estimators": 200,
+      "max_depth": 6,
+      "learning_rate": 0.2
+    },
+    "svm": {
+      "gamma": 0.1,
+      "C": 0.1
+    },
+    "mlp": {
+      "learning_rate_init": 0.0001,
+      "hidden_layer_sizes": [
+        200,
+        100,
+        50
+      ],
+      "alpha": 0.0001,
+      "activation": "relu"
+    },
+    "lasso": {
+      "C": 0.001
+    }
+  },
+  "best_cv_scores": {
+    "random_forest": 0.7108565297948082,
+    "xgboost": 0.7045619610468259,
+    "lightgbm": 0.6921575455050928,
+    "svm": 0.7150389708212384,
+    "mlp": 0.6900599564911116,
+    "lasso": 0.7099082412552427
+  },
+  "config": {
+    "n_iter": 20,
+    "cv_folds": 5,
+    "scoring": "f1",
+    "random_state": 42
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "random_forest": {
+    "accuracy": 0.6242424242424243,
+    "f1_score": 0.7232142857142857,
+    "precision": 0.6090225563909775,
+    "recall": 0.8901098901098901,
+    "roc_auc": 0.6509421509421509,
+    "average_precision": 0.6739515310240469,
+    "params": {
+      "n_estimators": 200,
+      "min_samples_split": 10,
+      "min_samples_leaf": 2,
+      "max_features": "log2",
+      "max_depth": 5
+    }
+  },
+  "xgboost": {
+    "accuracy": 0.6585858585858586,
+    "f1_score": 0.7081174438687392,
+    "precision": 0.6699346405228758,
+    "recall": 0.7509157509157509,
+    "roc_auc": 0.7243012243012245,
+    "average_precision": 0.7595412521103151,
+    "params": {
+      "subsample": 0.8,
+      "reg_lambda": 0.1,
+      "reg_alpha": 1,
+      "n_estimators": 500,
+      "max_depth": 10,
+      "learning_rate": 0.05
+    }
+  },
+  "lightgbm": {
+    "accuracy": 0.6545454545454545,
+    "f1_score": 0.7005253940455342,
+    "precision": 0.6711409395973155,
+    "recall": 0.7326007326007326,
+    "roc_auc": 0.7068442068442069,
+    "average_precision": 0.7421532246371876,
+    "params": {
+      "subsample": 0.7,
+      "reg_lambda": 10,
+      "reg_alpha": 0.1,
+      "num_leaves": 127,
+      "n_estimators": 200,
+      "max_depth": 6,
+      "learning_rate": 0.2
+    }
+  },
+  "svm": {
+    "accuracy": 0.5696969696969697,
+    "f1_score": 0.7163781624500666,
+    "precision": 0.5627615062761506,
+    "recall": 0.9853479853479854,
+    "roc_auc": 0.6654786654786655,
+    "average_precision": 0.6984278777035484,
+    "params": {
+      "gamma": 0.1,
+      "C": 0.1
+    }
+  },
+  "mlp": {
+    "accuracy": 0.5575757575757576,
+    "f1_score": 0.683068017366136,
+    "precision": 0.5645933014354066,
+    "recall": 0.8644688644688645,
+    "roc_auc": 0.5574530574530575,
+    "average_precision": 0.6112031781801757,
+    "params": {
+      "learning_rate_init": 0.0001,
+      "hidden_layer_sizes": [
+        200,
+        100,
+        50
+      ],
+      "alpha": 0.0001,
+      "activation": "relu"
+    }
+  },
+  "lasso": {
+    "accuracy": 0.5515151515151515,
+    "f1_score": 0.7109375,
+    "precision": 0.5515151515151515,
+    "recall": 1.0,
+    "roc_auc": 0.5,
+    "average_precision": 0.5515151515151515,
+    "params": {
+      "C": 0.001
+    }
+  }
+}

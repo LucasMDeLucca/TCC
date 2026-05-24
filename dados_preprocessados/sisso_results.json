@@ -1,0 +1,53 @@
+{
+  "results_by_dimensionality": {
+    "1": {
+      "r2_cv": 0.17840894210733155,
+      "r2_cv_std": 0.03375809074928709,
+      "r2_train": 0.20420050869873008,
+      "r2_test": 0.18895733157780337,
+      "rmse_test": 15.479087708772877,
+      "mae_test": 8.607612826788321,
+      "n_features_selected": 9,
+      "n_features_total": 10,
+      "alpha": 0.06330172534400066
+    },
+    "2": {
+      "r2_cv": 0.3479067678427751,
+      "r2_cv_std": 0.10490252001514064,
+      "r2_train": 0.462776186317048,
+      "r2_test": 0.35864329654117033,
+      "rmse_test": 13.764908501132904,
+      "mae_test": 7.587929499166904,
+      "n_features_selected": 38,
+      "n_features_total": 65,
+      "alpha": 0.18826952536289107
+    },
+    "3": {
+      "r2_cv": 0.44964509369188843,
+      "r2_cv_std": 0.10717123211430933,
+      "r2_train": 0.5461566056843594,
+      "r2_test": 0.5276847906549746,
+      "rmse_test": 11.812436179527886,
+      "mae_test": 6.283926549507031,
+      "n_features_selected": 33,
+      "n_features_total": 175,
+      "alpha": 0.48615804829694254
+    }
+  },
+  "best_degree": 2,
+  "equation": "Tc = 3.451 - 3.279*sc_DOSs_min + 3.013*sc_DOSs_min cell_0_1 - 2.899*sc_DOSs_min position_0_2 - 2.584*sc_DOSs_min position_1_2 + 2.443*cell_0_1 cell_2_2 + 1.774*cell_2_2^2 + 1.740*sc_DOSs_mean position_0_2 + 1.678*position_0_2",
+  "top_features": [
+    "sc_DOSs_min",
+    "sc_DOSs_mean",
+    "sc_DOSs_std",
+    "position_0_2",
+    "position_1_2",
+    "position_4_2",
+    "recip_latt_0_0",
+    "cell_0_1",
+    "cell_1_1",
+    "cell_2_2"
+  ],
+  "intercept": 3.4508329197249283,
+  "n_terms": 38
+}
