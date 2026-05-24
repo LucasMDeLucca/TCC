@@ -1,0 +1,190 @@
+--- a/tcc_final.tex
++++ b/tcc_final.tex
+@@ -213,9 +213,29 @@
+ \begin{itemize}
+     \item Os elétrons no par têm momentos opostos ($\vec{k}$, $-\vec{k}$) e spins opostos ($\uparrow$, $\downarrow$). Isso garante que o par tenha momento total e spin total nulos.
+     \item Como o par tem spin total zero (estado singleto), ele se comporta como um bóson composto, podendo condensar em um único estado quântico.
+-    \item O tamanho típico de um par de Cooper, dado pelo \textbf{comprimento de coerência} $\xi_0$, é da ordem de centenas a milhares de angstroms, muito maior que a distância interatômica. Isso significa que os pares de Cooper se sobrepõem fortemente, formando um condensado altamente correlacionado.
++    \item O tamanho típico de um par de Cooper, dado pelo \textbf{comprimento de coerência} $\xi_0$, varia drasticamente entre materiais, mas é em geral muito maior que a distância interatômica (Tabela \ref{tab:coerencia}). Isso significa que os pares de Cooper se sobrepõem fortemente, formando um condensado altamente correlacionado.
+ \end{itemize}
+ 
++\begin{table}[H]
++    \centering
++    \caption{Comprimento de coerência $\xi_0$ e tipo de supercondutividade para materiais representativos. Adaptado de \cite{tinkham1996}.}
++    \label{tab:coerencia}
++    \begin{tabular}{lcc}
++        \toprule
++        \textbf{Material} & \textbf{$\xi_0$ (Å)} & \textbf{Tipo} \\
++        \midrule
++        Al              & $\sim 16{,}000$ & I \\
++        Pb              & $\sim 830$      & I \\
++        Nb              & $\sim 380$      & II \\
++        MgB$_2$         & $\sim 50$       & II \\
++        YBa$_2$Cu$_3$O$_{7-\delta}$ (YBCO) & $\sim 15$ (\textit{ab-plane}) & II \\
++        LaFeAsO$_{1-x}$F$_x$ (pnicteto) & $\sim 20$--$30$ & II \\
++        \bottomrule
++    \end{tabular}
++\end{table}
++
++A enorme variação de $\xi_0$ (mais de três ordens de magnitude entre Al e YBCO) reflete diferentes regimes físicos: nos elementos convencionais como Al e Pb, $\xi_0$ é grande e a interação é dominada por fônons; em cupratos e pnictetos, $\xi_0$ se torna comparável ao parâmetro de rede, refletindo o caráter local do pareamento eletrônico não-convencional. Esta variação afeta diretamente o comportamento em campos magnéticos (Tipo I vs.\ Tipo II, via o parâmetro de Ginzburg-Landau $\kappa = \lambda/\xi$).
++
+ \subsection{A Hamiltoniana BCS e o Estado Fundamental}
+ 
+ A Hamiltoniana BCS, em sua forma simplificada, pode ser escrita como:
+@@ -316,7 +336,7 @@
+     E_k = \sqrt{\epsilon_k^2 + \Delta^2}
+ \end{equation}
+ 
+-Esta equação é fundamental. Ela mostra que, mesmo para $\epsilon_k = 0$ (elétrons exatamente no nível de Fermi), a energia de excitação mínima é $\Delta$, o gap supercondutor. Não existem excitações de baixa energia no estado supercondutor, o que explica a ausência de resistência elétrica: não há estados disponíveis para os elétrons espalharem.
++Esta equação é fundamental. Ela mostra que, mesmo para $\epsilon_k = 0$ (elétrons exatamente no nível de Fermi), a energia de excitação mínima é $\Delta$, o gap supercondutor. Para um gap \emph{isotrópico} (simetria \textit{s-wave}, característica da BCS convencional), não existem excitações de baixa energia no estado supercondutor, o que contribui para a ausência de resistência elétrica: não há estados disponíveis na vizinhança imediata do nível de Fermi para os elétrons espalharem. Cabe ressaltar, porém, que esta conclusão é específica a gaps isotrópicos. Em supercondutores não-convencionais com simetria \textit{d-wave} (cupratos) ou $s_\pm$ (pnictetos), o gap $\Delta(\vec{k})$ se anula ao longo de direções nodais no espaço de momento, permitindo a existência de excitações de quasipartícula de baixa energia ao longo desses nós. Esse comportamento se reflete em assinaturas experimentais como dependências em lei de potência (em vez de exponenciais) do calor específico, profundidade de penetração e condutividade térmica a baixas temperaturas, e constitui uma das principais evidências do caráter não-convencional desses materiais.
+ 
+ Os coeficientes de Bogoliubov são dados por:
+ 
+@@ -336,21 +356,21 @@
+ 
+ \subsection{A Energia Livre de Ginzburg-Landau}
+ 
+-A energia livre do supercondutor é expandida em potências de $\Psi$ e $|\nabla \Psi|^2$:
++A energia livre do supercondutor é expandida em potências de $\Psi$ e $|\nabla \Psi|^2$. No sistema internacional de unidades (SI), adotado nesta exposição para consistência com a seção de London, ela se escreve:
+ 
+ \begin{equation}
+-    F_s = F_n + \alpha |\Psi|^2 + \frac{\beta}{2} |\Psi|^4 + \frac{1}{2m^*} \left| \left( -i\hbar \nabla - \frac{e^*}{c} \vec{A} \right) \Psi \right|^2 + \frac{|\vec{B}|^2}{8\pi}
++    F_s = F_n + \alpha |\Psi|^2 + \frac{\beta}{2} |\Psi|^4 + \frac{1}{2m^*} \left| \left( -i\hbar \nabla - e^* \vec{A} \right) \Psi \right|^2 + \frac{|\vec{B}|^2}{2\mu_0}
+ \end{equation}
+ 
+-onde $F_n$ é a energia livre do estado normal, $\alpha$ e $\beta$ são coeficientes fenomenológicos (com $\alpha$ mudando de sinal em $T_c$), $m^* = 2m$ e $e^* = 2e$ são a massa e a carga efetivas do par de Cooper, e $\vec{A}$ é o potencial vetor magnético.
++onde $F_n$ é a energia livre do estado normal, $\alpha$ e $\beta$ são coeficientes fenomenológicos (com $\alpha$ mudando de sinal em $T_c$), $m^* = 2m$ e $e^* = 2e$ são a massa e a carga efetivas do par de Cooper, $\vec{A}$ é o potencial vetor magnético e $\mu_0$ é a permeabilidade do vácuo.
+ 
+ Minimizando a energia livre em relação a $\Psi$ e $\vec{A}$, obtemos as \textbf{equações de Ginzburg-Landau}:
+ 
+ \begin{equation}
+-    \alpha \Psi + \beta |\Psi|^2 \Psi + \frac{1}{2m^*} \left( -i\hbar \nabla - \frac{e^*}{c} \vec{A} \right)^2 \Psi = 0
++    \alpha \Psi + \beta |\Psi|^2 \Psi + \frac{1}{2m^*} \left( -i\hbar \nabla - e^* \vec{A} \right)^2 \Psi = 0
+ \end{equation}
+ \begin{equation}
+-    \vec{J}_s = \frac{e^* \hbar}{2m^* i} (\Psi^* \nabla \Psi - \Psi \nabla \Psi^*) - \frac{(e^*)^2}{m^* c} |\Psi|^2 \vec{A}
++    \vec{J}_s = \frac{e^* \hbar}{2m^* i} (\Psi^* \nabla \Psi - \Psi \nabla \Psi^*) - \frac{(e^*)^2}{m^*} |\Psi|^2 \vec{A}
+ \end{equation}
+ 
+ \subsection{Comprimentos Característicos: $\xi$ e $\lambda$}
+@@ -359,7 +379,7 @@
+ 
+ \begin{itemize}
+     \item \textbf{Comprimento de Coerência GL, $\xi(T)$:} A escala de distância sobre a qual o parâmetro de ordem pode variar. É dado por $\xi(T) = \sqrt{\hbar^2 / (2m^* |\alpha|)}$.
+-    \item \textbf{Profundidade de Penetração GL, $\lambda(T)$:} A escala de distância sobre a qual o campo magnético decai no supercondutor. É dado por $\lambda(T) = \sqrt{m^* c^2 \beta / (4\pi (e^*)^2 |\alpha|)}$.
++    \item \textbf{Profundidade de Penetração GL, $\lambda(T)$:} A escala de distância sobre a qual o campo magnético decai no supercondutor. Em unidades SI, $\lambda(T) = \sqrt{m^* \beta / (\mu_0 (e^*)^2 |\alpha|)}$.
+ \end{itemize}
+ 
+ A razão entre esses comprimentos define o \textbf{parâmetro de Ginzburg-Landau}, $\kappa = \lambda / \xi$, que distingue os supercondutores Tipo I ($\kappa < 1/\sqrt{2}$) dos Tipo II ($\kappa > 1/\sqrt{2}$). A teoria GL foi posteriormente derivada como um limite da teoria BCS próximo a $T_c$ por Gor'kov (1959).
+@@ -461,6 +481,18 @@
+ 
+ A restrição garante que todos os pontos estejam corretamente classificados e a uma distância de pelo menos $1/||w||$ do hiperplano.
+ 
++\subsection{Soft Margin: Tolerância a Erros}
++\label{sec:svm_soft}
++
++A formulação \textit{hard margin} pressupõe separabilidade linear perfeita, condição que raramente se verifica em problemas reais como o aqui estudado. A extensão \textbf{soft margin}, introduzida por Cortes e Vapnik \cite{cortes1995}, admite violações da margem mediante variáveis de folga $\xi_i \ge 0$, uma para cada amostra. O problema de otimização torna-se:
++
++\begin{equation}
++    \min_{w, b, \xi} \frac{1}{2} ||w||^2 + C \sum_{i=1}^N \xi_i
++\end{equation}
++\text{sujeito a: } $y_i(w \cdot x_i + b) \ge 1 - \xi_i$ e $\xi_i \ge 0, \quad \forall i=1, \dots, N$.
++
++O hiperparâmetro $C > 0$ controla o equilíbrio entre maximizar a margem (termo $\tfrac{1}{2}||w||^2$) e minimizar a soma das violações ($C \sum_i \xi_i$). Valores grandes de $C$ tornam o modelo intolerante a erros (próximo do \textit{hard margin}); valores pequenos permitem mais violações em troca de margem mais ampla e melhor generalização. Neste trabalho, foi adotada a formulação \textit{soft margin}, com $C$ otimizado via \texttt{RandomizedSearchCV} (Apêndice \ref{app:implementacao}); o valor ótimo encontrado, $C = 0{,}1$, indica regularização moderada-forte, consistente com a complexidade não-linear do problema, que é capturada predominantemente pelo \textit{kernel} RBF.
++
+ \subsection{O Problema Dual e os Multiplicadores de Lagrange}
+ 
+ Para resolver o problema de otimização, introduzimos multiplicadores de Lagrange $\alpha_i \ge 0$ para cada restrição. O Lagrangiano é:
+@@ -1306,35 +1338,63 @@
+ 
+ % --- REFERÊNCIAS ---
+ \begin{thebibliography}{99}
+-    \bibitem{onnes1911} H. K. Onnes, "The resistance of pure mercury at helium temperatures," \textit{Comm. Phys. Lab. Univ. Leiden}, vol. 12, pp. 122b, 124c, 1911.
+-    \bibitem{bcs1957} J. Bardeen, L. N. Cooper, and J. R. Schrieffer, "Theory of Superconductivity," \textit{Physical Review}, vol. 108, no. 5, pp. 1175--1204, 1957.
+-    \bibitem{bednorz1986} J. G. Bednorz and K. A. Müller, "Possible high $T_c$ superconductivity in the Ba-La-Cu-O system," \textit{Zeitschrift für Physik B Condensed Matter}, vol. 64, no. 2, pp. 189--193, 1986.
+-    \bibitem{kamihara2008} Y. Kamihara et al., "Iron-Based Layered Superconductor La[O$_{1-x}$F$_x$]FeAs (x = 0.05--0.12) with $T_c$ = 26 K," \textit{Journal of the American Chemical Society}, vol. 130, no. 11, pp. 3296--3297, 2008.
+-    \bibitem{stanev2018} V. Stanev et al., "Machine learning modeling of superconducting critical temperature," \textit{npj Computational Materials}, vol. 4, no. 1, p. 29, 2018.
+-    \bibitem{himanen2020} L. Himanen et al., "DScribe: Library of descriptors for machine learning in materials science," \textit{Computer Physics Communications}, vol. 247, p. 106949, 2020.
+-    \bibitem{hamidieh2018} K. Hamidieh, "A data-driven statistical model for predicting the critical temperature of a superconductor," \textit{Computational Materials Science}, vol. 154, pp. 346--354, 2018.
+-    \bibitem{london1935} F. London and H. London, "The Electromagnetic Equations of the Supraconductor," \textit{Proceedings of the Royal Society of London A}, vol. 149, no. 866, pp. 71--88, 1935.
+-    \bibitem{ginzburg1950} V. L. Ginzburg and L. D. Landau, "On the theory of superconductivity," \textit{Zh. Eksp. Teor. Fiz.}, vol. 20, pp. 1064--1082, 1950.
+-    \bibitem{tibshirani1996} R. Tibshirani, "Regression Shrinkage and Selection via the Lasso," \textit{Journal of the Royal Statistical Society. Series B}, vol. 58, no. 1, pp. 267--288, 1996.
+-    \bibitem{cortes1995} C. Cortes and V. Vapnik, "Support-vector networks," \textit{Machine Learning}, vol. 20, no. 3, pp. 273--297, 1995.
+-    \bibitem{rumelhart1986} D. E. Rumelhart, G. E. Hinton, and R. J. Williams, "Learning representations by back-propagating errors," \textit{Nature}, vol. 323, pp. 533--536, 1986.
+-    \bibitem{breiman2001} L. Breiman, "Random Forests," \textit{Machine Learning}, vol. 45, no. 1, pp. 5--32, 2001.
+-    \bibitem{friedman2001} J. H. Friedman, "Greedy Function Approximation: A Gradient Boosting Machine," \textit{Annals of Statistics}, vol. 29, no. 5, pp. 1189--1232, 2001.
+-    \bibitem{chen2016} T. Chen and C. Guestrin, "XGBoost: A Scalable Tree Boosting System," in \textit{Proceedings of the 22nd ACM SIGKDD}, 2016, pp. 785--794.
+-    \bibitem{ke2017} G. Ke et al., "LightGBM: A Highly Efficient Gradient Boosting Decision Tree," in \textit{Advances in Neural Information Processing Systems 30}, 2017, pp. 3146--3154.
+-    \bibitem{delucca2025} L. M. De Lucca, "Classifica\c{c}\~ao de Supercondutores Utilizando T\'ecnicas de Aprendizado de M\'aquina," Trabalho da disciplina de F\'isica Computacional, UFABC, 2025.
+-    \bibitem{scidb2024} Chinese Academy of Sciences, "SciDB: Scientific Data Bank," [Online]. Available: \url{https://www.scidb.cn/}
+-    \bibitem{ouyang2018} R. Ouyang, S. Curtarolo, E. Ahmetcik, M. Scheffler, and L. M. Ghiringhelli, "SISSO: A compressed-sensing method for identifying the best low-dimensional descriptor in an immensity of offered candidates," \textit{Physical Review Materials}, vol. 2, no. 8, p. 083802, 2018.
+-    \bibitem{cybenko1989} G. Cybenko, "Approximation by superpositions of a sigmoidal function," \textit{Mathematics of Control, Signals and Systems}, vol. 2, no. 4, pp. 303--314, 1989.
+-    \bibitem{drozdov2015} A. P. Drozdov et al., "Conventional superconductivity at 203 kelvin at high pressures in the sulfur hydride system," \textit{Nature}, vol. 525, pp. 73--76, 2015.
+-    \bibitem{drozdov2019} A. P. Drozdov et al., "Superconductivity at 250 K in lanthanum hydride under high pressures," \textit{Nature}, vol. 569, pp. 528--531, 2019.
+-    \bibitem{tinkham1996} M. Tinkham, \textit{Introduction to Superconductivity}, 2nd ed. New York: McGraw-Hill, 1996.
+-    \bibitem{ashcroft1976} N. W. Ashcroft and N. D. Mermin, \textit{Solid State Physics}. Philadelphia: Saunders College, 1976.
+-    \bibitem{degennes1966} P. G. de Gennes, \textit{Superconductivity of Metals and Alloys}. New York: W. A. Benjamin, 1966.
+-    \bibitem{pedregosa2011} F. Pedregosa et al., "Scikit-learn: Machine Learning in Python," \textit{Journal of Machine Learning Research}, vol. 12, pp. 2825--2830, 2011.
+-    \bibitem{lundberg2017} S. M. Lundberg and S.-I. Lee, "A Unified Approach to Interpreting Model Predictions," in \textit{Advances in Neural Information Processing Systems 30}, 2017, pp. 4765--4774.
+-    \bibitem{konno2021} T. Konno et al., "Deep learning model for finding new superconductors," \textit{Physical Review B}, vol. 103, no. 1, p. 014509, 2021.
+-    \bibitem{roter2020} B. Roter and S. V. Dordevic, "Predicting new superconductors and their critical temperatures using machine learning," \textit{Physica C: Superconductivity and its Applications}, vol. 575, p. 1353689, 2020.
++\bibitem{onnes1911} ONNES, H. K. The resistance of pure mercury at helium temperatures. \textit{Communications from the Physical Laboratory of the University of Leiden}, n. 122b/124c, 1911.
++
++\bibitem{bcs1957} BARDEEN, J.; COOPER, L. N.; SCHRIEFFER, J. R. Theory of Superconductivity. \textit{Physical Review}, v. 108, n. 5, p. 1175--1204, 1957.
++
++\bibitem{bednorz1986} BEDNORZ, J. G.; MÜLLER, K. A. Possible high $T_c$ superconductivity in the Ba-La-Cu-O system. \textit{Zeitschrift für Physik B Condensed Matter}, v. 64, n. 2, p. 189--193, 1986.
++
++\bibitem{kamihara2008} KAMIHARA, Y. \textit{et al.} Iron-Based Layered Superconductor La[O$_{1-x}$F$_x$]FeAs ($x = 0{,}05$--$0{,}12$) with $T_c = 26$ K. \textit{Journal of the American Chemical Society}, v. 130, n. 11, p. 3296--3297, 2008.
++
++\bibitem{stanev2018} STANEV, V. \textit{et al.} Machine learning modeling of superconducting critical temperature. \textit{npj Computational Materials}, v. 4, n. 1, p. 29, 2018.
++
++\bibitem{himanen2020} HIMANEN, L. \textit{et al.} DScribe: Library of descriptors for machine learning in materials science. \textit{Computer Physics Communications}, v. 247, p. 106949, 2020.
++
++\bibitem{hamidieh2018} HAMIDIEH, K. A data-driven statistical model for predicting the critical temperature of a superconductor. \textit{Computational Materials Science}, v. 154, p. 346--354, 2018.
++
++\bibitem{london1935} LONDON, F.; LONDON, H. The Electromagnetic Equations of the Supraconductor. \textit{Proceedings of the Royal Society of London A}, v. 149, n. 866, p. 71--88, 1935.
++
++\bibitem{ginzburg1950} GINZBURG, V. L.; LANDAU, L. D. On the theory of superconductivity. \textit{Zh. Eksp. Teor. Fiz.}, v. 20, p. 1064--1082, 1950.
++
++\bibitem{tibshirani1996} TIBSHIRANI, R. Regression Shrinkage and Selection via the Lasso. \textit{Journal of the Royal Statistical Society, Series B}, v. 58, n. 1, p. 267--288, 1996.
++
++\bibitem{cortes1995} CORTES, C.; VAPNIK, V. Support-vector networks. \textit{Machine Learning}, v. 20, n. 3, p. 273--297, 1995.
++
++\bibitem{rumelhart1986} RUMELHART, D. E.; HINTON, G. E.; WILLIAMS, R. J. Learning representations by back-propagating errors. \textit{Nature}, v. 323, p. 533--536, 1986.
++
++\bibitem{breiman2001} BREIMAN, L. Random Forests. \textit{Machine Learning}, v. 45, n. 1, p. 5--32, 2001.
++
++\bibitem{friedman2001} FRIEDMAN, J. H. Greedy Function Approximation: A Gradient Boosting Machine. \textit{Annals of Statistics}, v. 29, n. 5, p. 1189--1232, 2001.
++
++\bibitem{chen2016} CHEN, T.; GUESTRIN, C. XGBoost: A Scalable Tree Boosting System. In: \textit{Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining}. New York: ACM, 2016. p. 785--794.
++
++\bibitem{ke2017} KE, G. \textit{et al.} LightGBM: A Highly Efficient Gradient Boosting Decision Tree. In: \textit{Advances in Neural Information Processing Systems 30}. [\textit{S.l.}]: Curran Associates, 2017. p. 3146--3154.
++
++\bibitem{delucca2025} DE LUCCA, L. M. \textit{Classificação de Supercondutores Utilizando Técnicas de Aprendizado de Máquina}. 2025. Trabalho da disciplina de Física Computacional --- Universidade Federal do ABC, Santo André.
++
++\bibitem{scidb2024} CHINESE ACADEMY OF SCIENCES. \textit{SciDB: Scientific Data Bank}. Disponível em: \url{https://www.scidb.cn/}. Acesso em: 24 maio 2026.
++
++\bibitem{ouyang2018} OUYANG, R.; CURTAROLO, S.; AHMETCIK, E.; SCHEFFLER, M.; GHIRINGHELLI, L. M. SISSO: A compressed-sensing method for identifying the best low-dimensional descriptor in an immensity of offered candidates. \textit{Physical Review Materials}, v. 2, n. 8, p. 083802, 2018.
++
++\bibitem{cybenko1989} CYBENKO, G. Approximation by superpositions of a sigmoidal function. \textit{Mathematics of Control, Signals and Systems}, v. 2, n. 4, p. 303--314, 1989.
++
++\bibitem{drozdov2015} DROZDOV, A. P. \textit{et al.} Conventional superconductivity at 203 kelvin at high pressures in the sulfur hydride system. \textit{Nature}, v. 525, p. 73--76, 2015.
++
++\bibitem{drozdov2019} DROZDOV, A. P. \textit{et al.} Superconductivity at 250 K in lanthanum hydride under high pressures. \textit{Nature}, v. 569, p. 528--531, 2019.
++
++\bibitem{tinkham1996} TINKHAM, M. \textit{Introduction to Superconductivity}. 2. ed. New York: McGraw-Hill, 1996.
++
++\bibitem{ashcroft1976} ASHCROFT, N. W.; MERMIN, N. D. \textit{Solid State Physics}. Philadelphia: Saunders College, 1976.
++
++\bibitem{degennes1966} DE GENNES, P. G. \textit{Superconductivity of Metals and Alloys}. New York: W. A. Benjamin, 1966.
++
++\bibitem{pedregosa2011} PEDREGOSA, F. \textit{et al.} Scikit-learn: Machine Learning in Python. \textit{Journal of Machine Learning Research}, v. 12, p. 2825--2830, 2011.
++
++\bibitem{lundberg2017} LUNDBERG, S. M.; LEE, S.-I. A Unified Approach to Interpreting Model Predictions. In: \textit{Advances in Neural Information Processing Systems 30}. [\textit{S.l.}]: Curran Associates, 2017. p. 4765--4774.
++
++\bibitem{konno2021} KONNO, T. \textit{et al.} Deep learning model for finding new superconductors. \textit{Physical Review B}, v. 103, n. 1, p. 014509, 2021.
++
++\bibitem{roter2020} ROTER, B.; DORDEVIC, S. V. Predicting new superconductors and their critical temperatures using machine learning. \textit{Physica C: Superconductivity and its Applications}, v. 575, p. 1353689, 2020.
+ \end{thebibliography}
+ 
+ \end{document}
