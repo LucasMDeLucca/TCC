@@ -128,7 +128,7 @@ Este Trabalho de Conclusão de Curso se insere no campo da física computacional
     \item \textbf{Analisar a física subjacente aos resultados:} Ir além das métricas de acurácia e interpretar os resultados dos modelos sob a ótica da física da matéria condensada. Isso envolve analisar quais \textit{features} (descritores) foram mais importantes para as predições, correlacionar esses achados com a teoria BCS e de supercondutores não convencionais, e realizar uma análise de erro para identificar as limitações do modelo e os tipos de materiais que são mais difíceis de classificar.
 \end{enumerate}
 
-Ao  final, espera-se demonstrar que a sinergia entre a física de materiais e as técnicas de ciência de dados pode não apenas resolver problemas de classificação complexos, mas também aprofundar nossa compreensão dos fenômenos físicos envolvidos, abrindo novas avenidas para a pesquisa em supercondutividade.
+Ao final, espera-se demonstrar que a sinergia entre a física de materiais e as técnicas de ciência de dados pode não apenas resolver problemas de classificação complexos, mas também aprofundar nossa compreensão dos fenômenos físicos envolvidos, abrindo novas avenidas para a pesquisa em supercondutividade.
 
 \section{Aplicações Tecnológicas e Importância do Problema}
 
@@ -711,14 +711,15 @@ A extração e preparação dos dados foram realizadas em duas etapas, documenta
     \item \textbf{Exploração (\texttt{discovery.ipynb}):} Este notebook realizou uma análise exploratória dos dados extraídos, revelando variações significativas na completude dos dados --- algumas propriedades apresentavam até 99\% de valores ausentes. Características excessivamente ausentes foram removidas sistematicamente, e o dataset resultante (\texttt{data\_treino.csv}) foi salvo para uso nos modelos de classificação.
 \end{enumerate}
 
-O dataset final (\texttt{data\_treino.csv}) contém 2.474 amostras de materiais, cada uma descrita por 130 \textit{features} (descritores) e uma variável alvo, a temperatura crítica ($T_c$).
+O dataset final (\texttt{data\_treino.csv}) contém 2.474 amostras de materiais, cada uma descrita por aproximadamente 128 \textit{features} numéricas candidatas (após exclusão dos identificadores \texttt{id}, \texttt{group\_id} e da variável alvo $T_c$) e uma variável alvo binária derivada de $T_c$. Após o pré-processamento descrito na seção seguinte (remoção de colunas com mais de 50\% de valores ausentes e \textit{features} com variância zero), o conjunto final utilizado pelos modelos foi reduzido a 53 \textit{features}.
 
-As \textit{features} podem ser agrupadas em categorias:
+As \textit{features} podem ser agrupadas em categorias, conforme estão estruturadas no banco SciDB:
 \begin{itemize}
-    \item \textbf{Propriedades Atômicas:} Informações sobre os elementos constituintes, como número atômico médio, eletronegatividade média, raio atômico médio, massa atômica média, etc. Essas propriedades são calculadas como estatísticas (média, desvio padrão, etc.) sobre os átomos na fórmula química.
-    \item \textbf{Propriedades Eletrônicas:} Descritores derivados de cálculos de estrutura de bandas, como a densidade de estados (DOS) no nível de Fermi, a energia média das bandas, e características da superfície de Fermi.
-    \item \textbf{Propriedades Termodinâmicas:} Informações como a temperatura de Debye, relacionada às propriedades vibracionais da rede.
+    \item \textbf{Propriedades estruturais e composicionais:} número de átomos na célula unitária (\texttt{atoms\_size}), componentes do tensor de células (\texttt{cell\_i\_j}), posições atômicas (\texttt{position\_i\_j}) e componentes do tensor de rede recíproca (\texttt{recip\_latt\_i\_j}). Estas refletem a geometria e a periodicidade do cristal.
+    \item \textbf{Propriedades eletrônicas:} estatísticas (média, desvio padrão, mínimo, máximo) da densidade de estados eletrônicos próxima ao nível de Fermi (\texttt{sc\_DOSs\_*}), e estatísticas correspondentes da estrutura de bandas (\texttt{sc\_bands\_*}). Estas codificam o comportamento eletrônico relevante para a supercondutividade segundo a teoria BCS.
+    \item \textbf{Características da superfície de Fermi:} contadores e estatísticas associados aos contornos da superfície de Fermi (\texttt{fermi\_lens\_*}, \texttt{fermi\_line\_*}), incluindo seu tamanho e dispersão.
 \end{itemize}
+Note-se que, ao contrário de trabalhos como Stanev et al. \cite{stanev2018} e Hamidieh \cite{hamidieh2018}, este banco \emph{não} contém descritores compostos derivados explicitamente da fórmula química (eletronegatividade média, raio atômico médio etc.). A informação composicional está implícita na geometria e nas propriedades eletrônicas DFT --- uma limitação importante que retomamos na discussão.
 
 \section{Pré-processamento dos Dados}
 
@@ -736,7 +737,7 @@ Uma etapa crucial em qualquer projeto de aprendizado de máquina é o pré-proce
     \item \textbf{Controle de Data Leakage via GroupShuffleSplit:} Materiais pertencentes à mesma família estrutural (compartilhando \texttt{group\_id}) podem possuir descritores muito semelhantes. Se aparecem simultaneamente no treino e no teste, o modelo pode memorizar a família em vez de aprender o fenômeno físico, gerando estimativas otimistas. Para evitar este viés, a divisão treino/teste (80\%/20\%) foi realizada com \texttt{GroupShuffleSplit}, garantindo separação completa entre os grupos. Verificou-se explicitamente que a interseção dos grupos entre os dois conjuntos é nula (\texttt{overlap = 0}). O resultado foi 1979 amostras de treino (55.0\% SC) e 495 de teste (55.2\% SC). Este controle é responsável por uma fração da queda nas métricas reportadas em relação à versão preliminar do trabalho \cite{delucca2025}, e é uma das principais razões pelas quais os resultados aqui apresentados são considerados estimativas honestas do desempenho em materiais genuinamente novos.
 \end{enumerate}
 
-Após o pré-processamento, o número de \textit{features} utilizadas para o treinamento foi reduzido para 54.
+Após o pré-processamento, o número de \textit{features} utilizadas para o treinamento foi reduzido para 53.
 
 \section{Análise de Correlação e Multicolinearidade}
 
@@ -843,7 +844,7 @@ Os seis modelos foram treinados e avaliados no conjunto de teste. A Tabela \ref{
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{graficos/04_comparacao_metricas.png}
+    \includegraphics[width=0.9\textwidth]{graficos/07_comparacao_metricas.png}
     \caption{Comparação visual das métricas de desempenho para cada modelo. O Random Forest se destaca, especialmente em F1-Score e ROC-AUC.}
     \label{fig:comp_metricas}
 \end{figure}
@@ -863,13 +864,13 @@ As curvas ROC (Figura \ref{fig:roc}) e Precision-Recall (Figura \ref{fig:pr}) co
 \begin{figure}[H]
     \centering
     \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{graficos/05_curvas_roc.png}
+        \includegraphics[width=\linewidth]{graficos/07_curvas_roc_comparacao.png}
         \caption{Curvas ROC}
         \label{fig:roc}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\linewidth]{graficos/06_curvas_precision_recall.png}
+        \includegraphics[width=\linewidth]{graficos/07_curvas_pr_comparacao.png}
         \caption{Curvas Precision-Recall}
         \label{fig:pr}
     \end{subfigure}
@@ -916,7 +917,7 @@ Uma das vantagens dos modelos baseados em árvores é a capacidade de extrair a 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{graficos/09_importancia_features.png}
+    \includegraphics[width=\textwidth]{graficos/08_feature_importance_comparison.png}
     \caption{As 20 \textit{features} mais importantes de acordo com os modelos Random Forest (esquerda) e XGBoost (direita).}
     \label{fig:importancia}
 \end{figure}
@@ -1039,12 +1040,12 @@ Para entender as limitações do modelo, realizamos uma análise detalhada dos e
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{graficos/19_analise_erro.png}
+    \includegraphics[width=\textwidth]{graficos/08_analise_erro.png}
     \caption{Análise de erro do modelo Random Forest. À esquerda, a distribuição de $T_c$ para os Falsos Negativos. À direita, a distribuição da \textit{feature} \texttt{sc\_DOSs\_mean} para predições corretas e incorretas.}
     \label{fig:analise_erro}
 \end{figure}
 
-A análise revela um padrão importante: a mediana de $T_c$ para os Falsos Negativos é de apenas \textbf{2.30 K}. Isso indica que o modelo tem maior dificuldade em identificar \textbf{supercondutores convencionais de baixa temperatura}. Uma possível explicação física é que esses materiais, com $T_c$ muito baixo, possuem um gap supercondutor pequeno e propriedades eletrônicas (como a DOS) que são muito similares às de materiais não-supercondutores. Os descritores disponíveis podem não ser suficientes para distinguir esses casos limítrofes.
+A análise revela um padrão importante: a mediana de $T_c$ para os Falsos Negativos é de apenas \textbf{2.35 K} (com 54 falsos negativos em 495 amostras de teste). Isso indica que o modelo tem maior dificuldade em identificar \textbf{supercondutores convencionais de baixa temperatura}. Uma possível explicação física é que esses materiais, com $T_c$ muito baixo, possuem um gap supercondutor pequeno e propriedades eletrônicas (como a DOS) que são muito similares às de materiais não-supercondutores. Os descritores disponíveis podem não ser suficientes para distinguir esses casos limítrofes.
 
 O gráfico à direita da Figura \ref{fig:analise_erro} mostra que as predições incorretas (em vermelho) têm uma distribuição de \texttt{sc\_DOSs\_mean} que se sobrepõe significativamente com as predições corretas (em verde), mas com uma concentração ligeiramente maior em valores intermediários. Isso sugere que a região de "fronteira" no espaço de \textit{features} é onde o modelo tem mais incerteza.
 
@@ -1054,7 +1055,7 @@ Para garantir a robustez dos resultados, foi realizada uma validação cruzada d
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{graficos/11_validacao_cruzada.png}
+    \includegraphics[width=0.9\textwidth]{graficos/07_cv_boxplot.png}
     \caption{Resultados do F1-Score médio obtido com validação cruzada de 5 folds. As barras de erro representam o desvio padrão.}
     \label{fig:cv}
 \end{figure}
@@ -1074,15 +1075,36 @@ A análise dos boxplots revela que algumas \textit{features} apresentam distribu
 
 \section{Resultados do SISSO: Regressão Simbólica de $T_c$}
 
-Para complementar a análise de classificação, o modelo SISSO foi aplicado à tarefa de regressão, com o objetivo de encontrar uma expressão analítica para a temperatura crítica $T_c$ em função dos descritores físicos. A análise foi realizada apenas no subconjunto de materiais supercondutores ($T_c > 0$).
+Para complementar a análise de classificação, o modelo SISSO foi aplicado à tarefa de regressão, com o objetivo de encontrar uma expressão analítica para a temperatura crítica $T_c$ em função dos descritores físicos. A análise foi realizada apenas no subconjunto de materiais supercondutores ($T_c > 0$), restrita às 10 \textit{features} mais correlacionadas com $T_c$ por motivo de interpretabilidade.
 
-O desempenho do modelo, embora modesto (R² de 0.3537 no conjunto de teste), é secundário em relação à interpretabilidade da equação descoberta. O SISSO encontrou a seguinte expressão com 5 termos:
+Foram avaliadas três dimensionalidades de expansão polinomial (1D, 2D e 3D), com seleção esparsa via LASSO sobre as \textit{features} compostas. A Tabela \ref{tab:sisso_dim} sumariza os resultados.
+
+\begin{table}[H]
+    \centering
+    \caption{Desempenho do SISSO em diferentes dimensionalidades. CV: validação cruzada 5-fold; teste: conjunto independente.}
+    \label{tab:sisso_dim}
+    \begin{tabular}{cccccc}
+        \toprule
+        \textbf{Dim.} & \textbf{$R^2$ (CV)} & \textbf{$R^2$ (teste)} & \textbf{RMSE (K)} & \textbf{Termos selecionados} & \textbf{$\alpha$ LASSO} \\
+        \midrule
+        1D & $0{,}178 \pm 0{,}034$ & 0{,}189 & 15{,}48 & 9 / 10 & 0{,}063 \\
+        2D & $0{,}348 \pm 0{,}105$ & 0{,}359 & 13{,}76 & 38 / 65 & 0{,}188 \\
+        3D & $0{,}450 \pm 0{,}107$ & 0{,}528 & 11{,}81 & 33 / 175 & 0{,}486 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Selecionando a dimensionalidade 2D como compromisso entre desempenho e interpretabilidade (38 termos vs. 33 termos em 3D, mas espaço de \textit{features} substancialmente menor), o SISSO encontrou a seguinte expressão (mostrando os 8 termos de maior magnitude):
 
 \begin{equation}
-    T_c \approx 3.41 - 3.32 \cdot D_{min} - 3.10 \cdot D_{min} \cdot p_{0,2} + 3.02 \cdot D_{min} \cdot c_{0,1} + 2.71 \cdot c_{0,1} \cdot c_{2,2} - 2.60 \cdot D_{min} \cdot p_{1,2}
+\begin{aligned}
+T_c \approx{}& 3{,}45 - 3{,}28\, D_{\min} + 3{,}01\, D_{\min}\, c_{0,1} - 2{,}90\, D_{\min}\, p_{0,2}\\
+& - 2{,}58\, D_{\min}\, p_{1,2} + 2{,}44\, c_{0,1}\, c_{2,2} + 1{,}77\, c_{2,2}^{2}\\
+& + 1{,}74\, D_{\text{mean}}\, p_{0,2} + 1{,}68\, p_{0,2}
+\end{aligned}
 \end{equation}
 
-onde $D_{min}$ é a densidade de estados mínima, $p_{i,j}$ são componentes do vetor de posição e $c_{i,j}$ são componentes da célula unitária.
+onde $D_{\min}$ e $D_{\text{mean}}$ são, respectivamente, o mínimo e a média da DOS na vizinhança do nível de Fermi (\texttt{sc\_DOSs\_min} e \texttt{sc\_DOSs\_mean}); $p_{i,j}$ são componentes do tensor de posições atômicas reduzidas (\texttt{position\_i\_j}); e $c_{i,j}$ são componentes do tensor de células (\texttt{cell\_i\_j}). O $R^2$ no conjunto de teste foi de 0{,}359 em 2D, subindo a 0{,}528 em 3D --- valores modestos que evidenciam o caráter exploratório, não definitivo, da equação descoberta.
 
 \begin{figure}[H]
     \centering
@@ -1106,7 +1128,7 @@ A Figura \ref{fig:ranking} apresenta um ranking visual dos modelos com base no F
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{graficos/08_ranking_modelos.png}
+    \includegraphics[width=0.8\textwidth]{graficos/07_ranking_modelos.png}
     \caption{Ranking dos modelos com base no F1-Score no conjunto de teste. O Random Forest lidera, seguido de perto pelo XGBoost e LightGBM.}
     \label{fig:ranking}
 \end{figure}
@@ -1275,64 +1297,90 @@ Os resultados deste trabalho são consistentes com a literatura no sentido de qu
 \chapter{Descrição Detalhada das Features}
 \label{app:features}
 
-Este apêndice fornece uma descrição detalhada das principais \textit{features} (descritores) utilizadas neste trabalho, conectando-as aos conceitos físicos relevantes.
+Este apêndice descreve as 53 \textit{features} utilizadas pelos modelos após pré-processamento, agrupando-as nas três grandes categorias presentes no banco SciDB: propriedades eletrônicas (DOS e estrutura de bandas), propriedades geométrico-estruturais (célula, posições atômicas, rede recíproca) e características da superfície de Fermi. A lista completa de \textit{features} está em \texttt{dados\_preprocessados/pipeline\_summary.json}.
 
-\section{Features Relacionadas à Densidade de Estados (DOS)}
+\section{Features Eletrônicas: Densidade de Estados (DOS)}
 
-A densidade de estados eletrônicos, $N(E)$, é uma função que descreve o número de estados eletrônicos disponíveis em um determinado intervalo de energia. No contexto da supercondutividade, a DOS no nível de Fermi, $N(E_F)$, é particularmente importante, pois determina o número de elétrons disponíveis para formar pares de Cooper.
+A densidade de estados eletrônicos, $N(E)$, descreve o número de estados eletrônicos disponíveis por intervalo de energia. No contexto da supercondutividade, a DOS na vizinhança do nível de Fermi, $N(E_F)$, é particularmente importante, pois determina o número de elétrons disponíveis para formar pares de Cooper (Eq. da $T_c$ BCS). As \textit{features} aqui são estatísticas tomadas sobre uma janela de energia ao redor de $E_F$.
 
 \begin{table}[H]
     \centering
-    \caption{Descrição das \textit{features} relacionadas à densidade de estados.}
+    \caption{Features relacionadas à densidade de estados.}
     \begin{tabular}{lp{10cm}}
         \toprule
         \textbf{Feature} & \textbf{Descrição Física} \\
         \midrule
-        \texttt{sc\_DOSs\_mean} & Média da densidade de estados na região próxima ao nível de Fermi. Valores altos indicam mais elétrons disponíveis para o pareamento. \\
-        \texttt{sc\_DOSs\_min} & Valor mínimo da DOS na região de interesse. Valores muito negativos podem indicar a presença de gaps ou pseudogaps. \\
-        \texttt{sc\_DOSs\_max} & Valor máximo da DOS. Picos na DOS podem indicar singularidades de Van Hove, que são associadas a altas $T_c$ em alguns materiais. \\
-        \texttt{sc\_DOSs\_std} & Desvio padrão da DOS. Uma DOS mais uniforme (baixo desvio padrão) pode ser característica de certos tipos de supercondutores. \\
+        \texttt{sc\_DOSs\_size} & Número de pontos de amostragem usados para descrever a curva DOS$(E)$ próxima ao nível de Fermi. \\
+        \texttt{sc\_DOSs\_mean} & Média da DOS na janela em torno de $E_F$; aproximação prática para $N(E_F)$ na fórmula BCS. \\
+        \texttt{sc\_DOSs\_std} & Desvio padrão da DOS na janela; mede o quão estruturada (presença de picos, gaps) é a DOS local. \\
+        \texttt{sc\_DOSs\_min} & Mínimo da DOS na janela; valores próximos de zero sinalizam pseudo-gaps ou regiões de baixa densidade. \\
+        \texttt{sc\_DOSs\_max} & Máximo da DOS na janela; picos pronunciados podem indicar singularidades de Van Hove. \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-\section{Features Relacionadas à Estrutura de Bandas}
+\section{Features Eletrônicas: Estrutura de Bandas}
 
-A estrutura de bandas descreve a relação entre a energia dos elétrons e seu momento cristalino. As bandas que cruzam o nível de Fermi são particularmente importantes, pois determinam as propriedades de transporte e a superfície de Fermi.
+A estrutura de bandas descreve a relação entre a energia dos elétrons e seu momento cristalino, $\epsilon_n(\vec{k})$. As bandas que cruzam o nível de Fermi determinam as propriedades de transporte. As \textit{features} são estatísticas sobre os autovalores das bandas em uma região do espaço $\vec{k}$ próxima a $E_F$.
 
 \begin{table}[H]
     \centering
-    \caption{Descrição das \textit{features} relacionadas à estrutura de bandas.}
+    \caption{Features relacionadas à estrutura de bandas.}
     \begin{tabular}{lp{10cm}}
         \toprule
         \textbf{Feature} & \textbf{Descrição Física} \\
         \midrule
-        \texttt{sc\_bands\_mean} & Energia média das bandas na região do nível de Fermi. Relacionada à posição das bandas em relação ao potencial químico. \\
-        \texttt{sc\_bands\_std} & Desvio padrão das energias das bandas. Uma alta dispersão pode indicar uma estrutura de bandas complexa. \\
-        \texttt{sc\_bands\_min} & Energia mínima das bandas. Pode indicar a presença de bandas profundas que não contribuem diretamente para a supercondutividade. \\
-        \texttt{sc\_bands\_max} & Energia máxima das bandas. Bandas de alta energia podem indicar estados anti-ligantes. \\
+        \texttt{sc\_bands\_mean} & Energia média das bandas amostradas; reflete a posição do conjunto de bandas em relação ao $E_F$. \\
+        \texttt{sc\_bands\_std} & Dispersão energética das bandas; alta dispersão indica estrutura multibanda complexa. \\
+        \texttt{sc\_bands\_min} & Energia mínima entre as bandas amostradas (limite inferior do leque relevante). \\
+        \texttt{sc\_bands\_max} & Energia máxima entre as bandas amostradas (limite superior). \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-\section{Features Relacionadas a Propriedades Atômicas}
+\section{Features Estruturais: Célula, Posições e Rede Recíproca}
 
-Essas \textit{features} são derivadas das propriedades dos elementos químicos que compõem o material, calculadas como estatísticas sobre a fórmula química.
+Estas \textit{features} codificam a geometria do cristal, sem fazer referência explícita aos elementos químicos. São cruciais porque a supercondutividade depende fortemente da topologia da rede (parâmetros de rede, conectividade, simetria local), que por sua vez determina a estrutura de bandas e a frequência de fônons.
 
 \begin{table}[H]
     \centering
-    \caption{Descrição das \textit{features} relacionadas a propriedades atômicas.}
+    \caption{Features estruturais.}
     \begin{tabular}{lp{10cm}}
         \toprule
         \textbf{Feature} & \textbf{Descrição Física} \\
         \midrule
-        \texttt{atomic\_number\_mean} & Número atômico médio dos elementos. Relacionado à massa e ao número de elétrons. \\
-        \texttt{electronegativity\_mean} & Eletronegatividade média. Afeta a distribuição de carga e a natureza das ligações químicas. \\
-        \texttt{atomic\_radius\_mean} & Raio atômico médio. Relacionado ao volume da célula unitária e à densidade do material. \\
-        \texttt{valence\_electrons\_mean} & Número médio de elétrons de valência. Determina a química de ligação e a estrutura eletrônica. \\
+        \texttt{atoms\_size} & Número de átomos por célula unitária; correlaciona-se com a complexidade da estrutura. \\
+        \texttt{cell\_i\_j} ($i,j \in \{0,1,2\}$, componentes não nulos: \texttt{cell\_0\_0}, \texttt{cell\_0\_1}, \texttt{cell\_0\_2}, \texttt{cell\_1\_0}, \texttt{cell\_1\_1}, \texttt{cell\_2\_1}, \texttt{cell\_2\_2}) & Componentes do tensor $3\times 3$ de vetores de rede da célula primitiva, em \AA. Codificam parâmetros de rede e ângulos. \\
+        \texttt{position\_i\_j} ($i$ índice atômico, $j$ componente) & Coordenadas reduzidas dos átomos na célula unitária (16 posições $\times$ 3 componentes). \\
+        \texttt{position\_size} & Número de posições atômicas independentes registradas. \\
+        \texttt{recip\_latt\_i\_j} & Componentes do tensor de rede recíproca; relacionados às coordenadas no espaço $\vec{k}$. \\
         \bottomrule
     \end{tabular}
 \end{table}
+
+\section{Features da Superfície de Fermi}
+
+A superfície de Fermi é a superfície no espaço $\vec{k}$ onde $\epsilon_n(\vec{k}) = E_F$. Sua topologia (conectividade, áreas, nesting) está intimamente ligada às propriedades supercondutoras --- por exemplo, instabilidades de nesting podem favorecer ondas de densidade de spin que competem com a supercondutividade.
+
+\begin{table}[H]
+    \centering
+    \caption{Features da superfície de Fermi.}
+    \begin{tabular}{lp{10cm}}
+        \toprule
+        \textbf{Feature} & \textbf{Descrição Física} \\
+        \midrule
+        \texttt{fermi\_lens\_size} & Número de ``lentes'' (componentes conexas localmente esféricas) identificadas na superfície de Fermi. \\
+        \texttt{fermi\_lens\_shape\_1} & Indicador de forma da componente principal das lentes. \\
+        \texttt{fermi\_line\_size} & Número de pontos amostrados ao longo de linhas características da superfície de Fermi. \\
+        \texttt{fermi\_line\_mean}, \texttt{fermi\_line\_std}, \texttt{fermi\_line\_min}, \texttt{fermi\_line\_max} & Estatísticas dos valores ao longo das linhas amostradas (em geral energia ou ocupação local). \\
+        \texttt{fermi\_line\_shape\_1} & Indicador de forma das linhas. \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Observação sobre o que \emph{não} foi usado}
+
+Ao contrário de trabalhos como os de Hamidieh \cite{hamidieh2018} e Stanev et al. \cite{stanev2018}, este trabalho \emph{não} utilizou descritores químicos compostos (eletronegatividade média de Pauling, raio atômico médio, número de elétrons de valência médio, massa atômica média, etc.), porque o banco SciDB utilizado não os fornece pré-computados. A informação composicional está implícita nas \textit{features} estruturais e eletrônicas derivadas de DFT. Esta é uma limitação relevante: descritores compositionais explícitos têm peso interpretativo direto na fórmula BCS (através de $\omega_D \propto 1/\sqrt{M}$) e tipicamente melhoram o desempenho preditivo. Sua inclusão é uma direção natural para trabalhos futuros.
 
 
 
