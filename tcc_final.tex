@@ -54,8 +54,8 @@
     {\Huge\bfseries Classificação de Supercondutores Utilizando Técnicas de Aprendizado de Máquina: Uma Abordagem da Física Computacional}
     \vfill
     {\Large\itshape Lucas Martin De Lucca}\\[1cm]
-    % TODO: preencher o nome do orientador antes da entrega final
-    {\large Orientador: Prof. Dr. [Nome do Orientador]}
+    % TODO_DEFESA: substituir o placeholder abaixo pelo nome real do orientador antes da entrega final
+    {\large Orientador: Prof.\ Dr.\ \textbf{[Nome do Orientador --- PREENCHER ANTES DA DEFESA]}}
     \vfill
     {\large Santo André -- SP \\ 2026}
 \end{titlepage}
@@ -711,7 +711,7 @@ A extração e preparação dos dados foram realizadas em duas etapas, documenta
     \item \textbf{Exploração (\texttt{discovery.ipynb}):} Este notebook realizou uma análise exploratória dos dados extraídos, revelando variações significativas na completude dos dados --- algumas propriedades apresentavam até 99\% de valores ausentes. Características excessivamente ausentes foram removidas sistematicamente, e o dataset resultante (\texttt{data\_treino.csv}) foi salvo para uso nos modelos de classificação.
 \end{enumerate}
 
-O dataset final (\texttt{data\_treino.csv}) contém 2.474 amostras de materiais, cada uma descrita por aproximadamente 128 \textit{features} numéricas candidatas (após exclusão dos identificadores \texttt{id}, \texttt{group\_id} e da variável alvo $T_c$) e uma variável alvo binária derivada de $T_c$. Após o pré-processamento descrito na seção seguinte (remoção de colunas com mais de 50\% de valores ausentes e \textit{features} com variância zero), o conjunto final utilizado pelos modelos foi reduzido a 53 \textit{features}.
+O dataset final (\texttt{data\_treino.csv}) contém 2.474 amostras de materiais, cada uma descrita por 116 \textit{features} numéricas candidatas (após exclusão dos identificadores \texttt{id}, \texttt{group\_id}, da variável alvo $T_c$ e de 12 colunas string \texttt{atoms\_0}\ldots\texttt{atoms\_11} que codificam apenas a composição elementar e são descartadas pelo \texttt{select\_dtypes} no pipeline) e uma variável alvo binária derivada de $T_c$. Após o pré-processamento descrito na seção seguinte (remoção de colunas com mais de 50\% de valores ausentes e \textit{features} com variância zero), o conjunto final utilizado pelos modelos foi reduzido a 53 \textit{features}.
 
 As \textit{features} podem ser agrupadas em categorias, conforme estão estruturadas no banco SciDB:
 \begin{itemize}

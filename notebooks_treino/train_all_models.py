@@ -31,8 +31,17 @@ GRAFICOS_PATH = '../graficos/'
 MODELOS_PATH = '../modelos/'
 RESULTS_PATH = '../dados_preprocessados/resultados_v2.json'
 
+# Por padrão, NÃO salva figuras individuais por modelo (matriz de confusão, ROC, PR,
+# feature importance) porque elas não são referenciadas no TCC e poluíam o repositório
+# (ver revisão crítica P4). As figuras consolidadas (07_*) sempre são salvas.
+# Para gerar as individuais para inspeção (em graficos/individuais/), defina como True.
+SAVE_INDIVIDUAL_FIGS = False
+INDIVIDUAL_FIGS_PATH = os.path.join(GRAFICOS_PATH, 'individuais')
+
 os.makedirs(GRAFICOS_PATH, exist_ok=True)
 os.makedirs(MODELOS_PATH, exist_ok=True)
+if SAVE_INDIVIDUAL_FIGS:
+    os.makedirs(INDIVIDUAL_FIGS_PATH, exist_ok=True)
 
 print("="*70)
 print("RE-TREINAMENTO DOS MODELOS COM HIPERPARÂMETROS OTIMIZADOS")
@@ -134,74 +143,75 @@ for name in model_names:
     print(f"  ROC-AUC:   {roc_auc:.4f}")
     print(f"  AP:        {ap:.4f}")
     
-    # --- Gráficos individuais ---
+    # --- Gráficos individuais (opcionais, controlados por SAVE_INDIVIDUAL_FIGS) ---
     prefix = f"{model_names.index(name)+1:02d}"
-    
-    # Matriz de Confusão
-    fig, ax = plt.subplots(1, 1, figsize=(6, 5))
-    cm = confusion_matrix(y_test, y_pred)
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax,
-                xticklabels=['Não-SC', 'SC'], yticklabels=['Não-SC', 'SC'])
-    ax.set_title(f'Matriz de Confusão — {model_display[name]}')
-    ax.set_xlabel('Predito')
-    ax.set_ylabel('Real')
-    plt.tight_layout()
-    plt.savefig(os.path.join(GRAFICOS_PATH, f'{prefix}_{name}_confusion_matrix.png'), dpi=300)
-    plt.close()
-    
-    # Curva ROC
-    fig, ax = plt.subplots(1, 1, figsize=(6, 5))
-    fpr, tpr, _ = roc_curve(y_test, y_proba)
-    ax.plot(fpr, tpr, 'b-', lw=2, label=f'ROC-AUC = {roc_auc:.4f}')
-    ax.plot([0, 1], [0, 1], 'k--', alpha=0.5)
-    ax.set_xlabel('Taxa de Falso Positivo')
-    ax.set_ylabel('Taxa de Verdadeiro Positivo')
-    ax.set_title(f'Curva ROC — {model_display[name]}')
-    ax.legend()
-    ax.grid(True, alpha=0.3)
-    plt.tight_layout()
-    plt.savefig(os.path.join(GRAFICOS_PATH, f'{prefix}_{name}_roc_curve.png'), dpi=300)
-    plt.close()
-    
-    # Curva Precision-Recall
-    fig, ax = plt.subplots(1, 1, figsize=(6, 5))
-    prec_curve, rec_curve, _ = precision_recall_curve(y_test, y_proba)
-    ax.plot(rec_curve, prec_curve, 'r-', lw=2, label=f'AP = {ap:.4f}')
-    ax.set_xlabel('Recall')
-    ax.set_ylabel('Precision')
-    ax.set_title(f'Curva Precision-Recall — {model_display[name]}')
-    ax.legend()
-    ax.grid(True, alpha=0.3)
-    plt.tight_layout()
-    plt.savefig(os.path.join(GRAFICOS_PATH, f'{prefix}_{name}_pr_curve.png'), dpi=300)
-    plt.close()
-    
-    # Feature Importance (para modelos que suportam)
-    if hasattr(model, 'feature_importances_'):
-        fig, ax = plt.subplots(1, 1, figsize=(10, 8))
-        importances = model.feature_importances_
-        idx_sorted = np.argsort(importances)[-20:]
-        ax.barh(range(len(idx_sorted)), importances[idx_sorted], color='steelblue')
-        ax.set_yticks(range(len(idx_sorted)))
-        ax.set_yticklabels([feature_names[i] for i in idx_sorted])
-        ax.set_xlabel('Importância')
-        ax.set_title(f'Top 20 Features — {model_display[name]}')
+
+    if SAVE_INDIVIDUAL_FIGS:
+        # Matriz de Confusão
+        fig, ax = plt.subplots(1, 1, figsize=(6, 5))
+        cm = confusion_matrix(y_test, y_pred)
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax,
+                    xticklabels=['Não-SC', 'SC'], yticklabels=['Não-SC', 'SC'])
+        ax.set_title(f'Matriz de Confusão — {model_display[name]}')
+        ax.set_xlabel('Predito')
+        ax.set_ylabel('Real')
         plt.tight_layout()
-        plt.savefig(os.path.join(GRAFICOS_PATH, f'{prefix}_{name}_feature_importance.png'), dpi=300)
+        plt.savefig(os.path.join(INDIVIDUAL_FIGS_PATH, f'{prefix}_{name}_confusion_matrix.png'), dpi=300)
         plt.close()
-    elif name == 'lasso':
-        fig, ax = plt.subplots(1, 1, figsize=(10, 8))
-        coefs = model.coef_[0]
-        idx_sorted = np.argsort(np.abs(coefs))[-20:]
-        colors = ['green' if c > 0 else 'red' for c in coefs[idx_sorted]]
-        ax.barh(range(len(idx_sorted)), coefs[idx_sorted], color=colors)
-        ax.set_yticks(range(len(idx_sorted)))
-        ax.set_yticklabels([feature_names[i] for i in idx_sorted])
-        ax.set_xlabel('Coeficiente')
-        ax.set_title(f'Top 20 Coeficientes — {model_display[name]}')
+
+        # Curva ROC
+        fig, ax = plt.subplots(1, 1, figsize=(6, 5))
+        fpr, tpr, _ = roc_curve(y_test, y_proba)
+        ax.plot(fpr, tpr, 'b-', lw=2, label=f'ROC-AUC = {roc_auc:.4f}')
+        ax.plot([0, 1], [0, 1], 'k--', alpha=0.5)
+        ax.set_xlabel('Taxa de Falso Positivo')
+        ax.set_ylabel('Taxa de Verdadeiro Positivo')
+        ax.set_title(f'Curva ROC — {model_display[name]}')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
         plt.tight_layout()
-        plt.savefig(os.path.join(GRAFICOS_PATH, f'{prefix}_{name}_feature_importance.png'), dpi=300)
+        plt.savefig(os.path.join(INDIVIDUAL_FIGS_PATH, f'{prefix}_{name}_roc_curve.png'), dpi=300)
         plt.close()
+
+        # Curva Precision-Recall
+        fig, ax = plt.subplots(1, 1, figsize=(6, 5))
+        prec_curve, rec_curve, _ = precision_recall_curve(y_test, y_proba)
+        ax.plot(rec_curve, prec_curve, 'r-', lw=2, label=f'AP = {ap:.4f}')
+        ax.set_xlabel('Recall')
+        ax.set_ylabel('Precision')
+        ax.set_title(f'Curva Precision-Recall — {model_display[name]}')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.savefig(os.path.join(INDIVIDUAL_FIGS_PATH, f'{prefix}_{name}_pr_curve.png'), dpi=300)
+        plt.close()
+
+        # Feature Importance (para modelos que suportam)
+        if hasattr(model, 'feature_importances_'):
+            fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+            importances = model.feature_importances_
+            idx_sorted = np.argsort(importances)[-20:]
+            ax.barh(range(len(idx_sorted)), importances[idx_sorted], color='steelblue')
+            ax.set_yticks(range(len(idx_sorted)))
+            ax.set_yticklabels([feature_names[i] for i in idx_sorted])
+            ax.set_xlabel('Importância')
+            ax.set_title(f'Top 20 Features — {model_display[name]}')
+            plt.tight_layout()
+            plt.savefig(os.path.join(INDIVIDUAL_FIGS_PATH, f'{prefix}_{name}_feature_importance.png'), dpi=300)
+            plt.close()
+        elif name == 'lasso':
+            fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+            coefs = model.coef_[0]
+            idx_sorted = np.argsort(np.abs(coefs))[-20:]
+            colors = ['green' if c > 0 else 'red' for c in coefs[idx_sorted]]
+            ax.barh(range(len(idx_sorted)), coefs[idx_sorted], color=colors)
+            ax.set_yticks(range(len(idx_sorted)))
+            ax.set_yticklabels([feature_names[i] for i in idx_sorted])
+            ax.set_xlabel('Coeficiente')
+            ax.set_title(f'Top 20 Coeficientes — {model_display[name]}')
+            plt.tight_layout()
+            plt.savefig(os.path.join(INDIVIDUAL_FIGS_PATH, f'{prefix}_{name}_feature_importance.png'), dpi=300)
+            plt.close()
     
     # Salvar modelo
     with open(os.path.join(MODELOS_PATH, f'{name}_model.pkl'), 'wb') as f:

@@ -17,14 +17,14 @@ Este trabalho investiga a aplicação de técnicas de aprendizado de máquina pa
 
 ```
 TCC/
-├── tcc_final.tex                    # Documento LaTeX do TCC (~60 páginas)
+├── tcc_final.tex                    # Documento LaTeX do TCC (72 páginas)
 ├── main.tex                         # Proposta original do TCC
 ├── requirements.txt                 # Dependências Python
 ├── README.md                        # Este arquivo
 ├── .gitignore                       # Arquivos ignorados pelo Git
 │
 ├── dados/
-│   └── data_treino.csv              # Dataset final (2474 materiais, 56 features)
+│   └── data_treino.csv              # Dataset bruto (2474 materiais, 116 features numéricas + 12 strings; reduzido a 53 após pré-processamento)
 │
 ├── dados_preprocessados/
 │   ├── dados_tcc_v2.npz             # Arrays NumPy (X_train, X_test, y_train, y_test)
@@ -68,8 +68,6 @@ TCC/
 │   ├── svm_model.pkl
 │   ├── mlp_model.pkl
 │   └── lasso_model.pkl
-│
-├── notebooks/                       # Notebooks Jupyter (versão anterior)
 │
 ├── ler_arquivo.ipynb                # Extração dos dados do HDF5 (SciDB)
 ├── discovery.ipynb                  # Exploração e limpeza dos dados
