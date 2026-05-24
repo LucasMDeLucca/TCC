@@ -38,6 +38,10 @@ VALIDACAO_P??.md
 # Figuras individuais por modelo (opcionais, geradas só com SAVE_INDIVIDUAL_FIGS=True)
 graficos/individuais/
 
+# Outputs regeneráveis do pipeline (gerados por 00_pipeline_preprocessamento.py)
+# Para regenerar localmente: cd notebooks_treino && python3 00_pipeline_preprocessamento.py
+dados/data_treino_v2.csv
+
 # Python
 __pycache__/
 *.pyc
